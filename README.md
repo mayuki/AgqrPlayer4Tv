@@ -6,7 +6,7 @@
 Android TVで超A&amp;G+を再生します。
 
 ## 使い方
-1. apk を何とかしてインストールします(ESファイルエクスプローラーとか)
+1. apk を何とかしてインストールします(ESファイルエクスプローラーとか。apkは[releases](https://github.com/mayuki/AgqrPlayer4Tv/releases)にあります)
 2. ホームから起動します
 3. 何かリモコンのボタンを押します
 4. 声優さんの声が聞こえてきます
