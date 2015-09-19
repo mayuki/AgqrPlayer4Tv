@@ -32,10 +32,14 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         WebView webView = ((WebView)this.findViewById(R.id.webView));
+
         webView.getSettings().setUserAgentString("Mozilla/5.0 (Linux; Android 4.3; Nexus 7 Build/JSS15Q) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2307.2 Safari/537.36");
         webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setMediaPlaybackRequiresUserGesture(false); // ユーザーの操作なしに再生を始める指定
+
         webView.setWebChromeClient(new AgWebChromeClient());
         webView.setWebViewClient(new AgWebViewClient());
+
         webView.loadUrl("http://www.uniqueradio.jp/agplayerf/newplayerf2-sp.php");
     }
 }
