@@ -8,13 +8,18 @@ import android.webkit.WebViewClient;
  * Created by Tomoyo on 2015/08/30.
  */
 public class AgWebViewClient extends WebViewClient {
-    public void  onPageFinished (WebView view, String url) {
+    private String _injectScriptOnPageFinished;
+
+    public AgWebViewClient(String injectScriptOnPageFinished) {
+        this._injectScriptOnPageFinished = injectScriptOnPageFinished;
+    }
+
+    @Override
+    public void onPageFinished (WebView view, String url) {
         Log.d("AgWebViewClient", "onPageFinished");
 
         // 適当にスクリプトを実行してなんか良しなに
         // 自動で勝手に始まるようにする(雑)
-        // タイミングによっては実行できないっぽい。詳しく調べる気がないのでなんかキーを押したら再生しようという適当な気持ち
-        view.evaluateJavascript("(function(){ document.querySelector('video').play(); })()", null);
-        view.evaluateJavascript("(function(){ document.addEventListener('keydown', function () { document.querySelector('video').play(); }); })()", null);
+        view.evaluateJavascript(this._injectScriptOnPageFinished, null);
     }
 }

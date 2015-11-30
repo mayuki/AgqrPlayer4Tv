@@ -1,5 +1,7 @@
 package org.misuzilla.agqrplayer4tv;
 
+import android.util.Log;
+import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
@@ -15,5 +17,11 @@ public class AgWebChromeClient extends WebChromeClient {
         // アンケートが出てきて詰むのを回避できることがある(タイミングによるやも)
         // Android 5.x でconfirmが死んでることがあるので…。
         view.loadUrl("javascript:(function(){ document.cookie = 'joqr='; window.confirm = function () { return true; }; })()");
+    }
+
+    @Override
+    public boolean onConsoleMessage(ConsoleMessage cm) {
+        Log.d("AgWebChromeClient", cm.sourceId() + " (" + cm.lineNumber() + "): " + cm.message());
+        return true;
     }
 }
