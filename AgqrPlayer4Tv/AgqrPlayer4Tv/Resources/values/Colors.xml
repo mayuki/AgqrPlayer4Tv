@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+  <color name="Accent">#e6006b</color>
+  <color name="AccentDark">#9d0049</color>
+
+  <!-- inherit from the material theme -->
+  <style name="Theme.Leanback.AgqrPlayer4Tv" parent="Theme.Leanback">
+    <!-- Main theme colors -->
+    <!--   your app branding color for the app bar -->
+    <item name="android:colorPrimary">@color/Accent</item>
+    <!--   darker variant for the status bar and contextual app bars -->
+    <item name="android:colorPrimaryDark">@color/AccentDark</item>
+    <!--   theme UI controls like checkboxes and text fields -->
+    <item name="android:colorAccent">@color/Accent</item>
+  </style>
+</resources>

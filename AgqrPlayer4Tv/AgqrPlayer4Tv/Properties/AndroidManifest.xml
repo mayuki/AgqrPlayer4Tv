@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.misuzilla.agqrplayer4tv" android:versionCode="1" android:versionName="1.0" android:installLocation="auto">
+	<uses-sdk android:minSdkVersion="21" />
+	<application android:label="@string/ApplicationName" android:theme="@style/Theme.Leanback.AgqrPlayer4Tv" android:banner="@drawable/Banner"></application>
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+	<uses-permission android:name="android.permission.INTERNET" />
+</manifest>

@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<component format="1" id="hockeyappandroid">
+  <name>HockeyApp for Android</name>
+  <publisher>Microsoft</publisher>
+  <publisher-url>http://hockeyapp.net</publisher-url>
+  <version>4.1.0</version>
+  <summary>HockeyApp is a platform to collect live crash reports, get feedback from your users, distribute your betas, recruit new testers, and analyze your test coverage.</summary>
+  <samples>
+    <sample id="HockeyAppSampleAndroid">
+      <name>Android Sample</name>
+      <summary>Android Sample</summary>
+    </sample>
+  </samples>
+</component>

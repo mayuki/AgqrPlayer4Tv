@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+  <dimen name="RecommendationEmptyWidth">176dp</dimen>
+  <dimen name="RecommendationEmptyHeight">176dp</dimen>
+  <dimen name="RecommendationTextSize">24dp</dimen>
+</resources>
