@@ -60,9 +60,6 @@
     <DebugSymbols>False</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ExoPlayer">
-      <HintPath>..\ExoPlayer\bin\Debug\ExoPlayer.dll</HintPath>
-    </Reference>
     <Reference Include="HockeySDK">
       <HintPath>..\Components\hockeyappandroid-4.1.0\lib\android\HockeySDK.dll</HintPath>
     </Reference>
@@ -92,9 +89,6 @@
     <Reference Include="ReactiveProperty.DataAnnotations, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ReactiveProperty.2.7.2\lib\MonoAndroid\ReactiveProperty.DataAnnotations.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="RtmpClient">
-      <HintPath>..\RtmpClient\bin\Debug\RtmpClient.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -223,6 +217,16 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\DrawingDimensions.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ExoPlayer\ExoPlayer.csproj">
+      <Project>{0b871c50-6d5d-45d0-b32d-84e25adb869a}</Project>
+      <Name>ExoPlayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RtmpClient\RtmpClient.csproj">
+      <Project>{e4c0d020-f8c8-4e53-8af2-5fcedfbe51cf}</Project>
+      <Name>RtmpClient</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

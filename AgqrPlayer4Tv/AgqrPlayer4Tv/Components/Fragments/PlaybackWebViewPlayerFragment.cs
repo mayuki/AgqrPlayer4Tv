@@ -23,7 +23,7 @@ namespace AgqrPlayer4Tv.Components.Fragments
 
             webView.Settings.UserAgentString = UserAgent;
             webView.Settings.JavaScriptEnabled = true;
-            webView.Settings.MediaPlaybackRequiresUserGesture = false; // ƒ†[ƒU[‚Ì‘€ì‚È‚µ‚ÉÄ¶‚ğn‚ß‚éw’è
+            webView.Settings.MediaPlaybackRequiresUserGesture = false; // ãƒ¦ãƒ¼ã‚¶ãƒ¼ã®æ“ä½œãªã—ã«å†ç”Ÿã‚’å§‹ã‚ã‚‹æŒ‡å®š
 
             webView.SetWebChromeClient(new AgWebChromeClient());
             webView.SetWebViewClient(new AgWebViewClient(new StreamReader(Resources.OpenRawResource(Resource.Raw.InjectScriptOnPageFinished)).ReadToEnd()));

@@ -15,7 +15,7 @@ using Android.Util;
 namespace AgqrPlayer4Tv.Services
 {
     /// <summary>
-    /// Leanback Launcher (‚¢‚í‚ä‚éƒz[ƒ€)‚Ì‚¨‚·‚·‚ßˆê——‚É•\¦‚·‚é‚½‚ß‚ÌƒT[ƒrƒX‚Å‚·B
+    /// Leanback Launcher (ã„ã‚ã‚†ã‚‹ãƒ›ãƒ¼ãƒ )ã®ãŠã™ã™ã‚ä¸€è¦§ã«è¡¨ç¤ºã™ã‚‹ãŸã‚ã®ã‚µãƒ¼ãƒ“ã‚¹ã§ã™ã€‚
     /// </summary>
     [Service(Enabled = true)]
     public class UpdateRecommendationService : IntentService
@@ -63,7 +63,7 @@ namespace AgqrPlayer4Tv.Services
                 Log.Error(Tag, ex.ToString());
             }
 
-            // Title,EmailAddress,ImageUrl ‚Ìƒ}ƒbƒsƒ“ƒOCSV
+            // Title,EmailAddress,ImageUrl ã®ãƒãƒƒãƒ”ãƒ³ã‚°CSV
             return csvData.Split('\n')
                 .Select(x => x.Trim())
                 .Where(x => !x.StartsWith("#"))
@@ -80,7 +80,7 @@ namespace AgqrPlayer4Tv.Services
                         new
                         {
                             // EmailAddress
-                            Key = String.IsNullOrWhiteSpace(x[1]) ? x[0] + "-EmailAddress" : x[1], // ƒ[ƒ‹ƒAƒhƒŒƒX‚ª‚È‚¢ê‡‚à‚ ‚é‚ñ‚¶‚á‚æ
+                            Key = String.IsNullOrWhiteSpace(x[1]) ? x[0] + "-EmailAddress" : x[1], // ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ãŒãªã„å ´åˆã‚‚ã‚ã‚‹ã‚“ã˜ã‚ƒã‚ˆ
                             TileImage = x[2],
                         }
                 })
@@ -100,17 +100,17 @@ namespace AgqrPlayer4Tv.Services
             var timetableDataset = timetable.GetDatasetAsync().Result;
             var now = LogicalDateTime.Now;
 
-            // ”Ô‘g‚Æ”Ô‘g‚Ì‰æ‘œ‚Ìƒ}ƒbƒsƒ“ƒO
+            // ç•ªçµ„ã¨ç•ªçµ„ã®ç”»åƒã®ãƒãƒƒãƒ”ãƒ³ã‚°
             var mapping = await GetProgramImageMappingAsync().ConfigureAwait(false);
 
-            // ÅV‚ÆŸ‚Ì”Ô‘g‚ğ‚Æ‚Á‚Ä‚­‚é
+            // æœ€æ–°ã¨æ¬¡ã®ç•ªçµ„ã‚’ã¨ã£ã¦ãã‚‹
             foreach (var program in timetableDataset.Data[now.DayOfWeek].Where(x => x.End >= now.Time).Take(2))
             {
                 var isNowPlaying = program.IsNowPlaying;
                 var intent = new Intent(this.ApplicationContext, typeof(MainActivity));
                 var builder = new Notification.Builder(this.ApplicationContext)
                     .SetContentTitle(program.Title)
-                    .SetContentText(isNowPlaying ? $"Œ»İ•ú‘—’†: {program.End.ToString("hh\\:mm")}‚Ü‚Å" : $"‚à‚¤‚·‚®ƒXƒ^[ƒg: {program.Start.ToString("hh\\:mm")}‚©‚ç")
+                    .SetContentText(isNowPlaying ? $"ç¾åœ¨æ”¾é€ä¸­: {program.End.ToString("hh\\:mm")}ã¾ã§" : $"ã‚‚ã†ã™ãã‚¹ã‚¿ãƒ¼ãƒˆ: {program.Start.ToString("hh\\:mm")}ã‹ã‚‰")
                     .SetPriority((int)(isNowPlaying ? NotificationPriority.Max : NotificationPriority.Default))
                     .SetLocalOnly(true)
                     .SetOngoing(true)
@@ -124,7 +124,7 @@ namespace AgqrPlayer4Tv.Services
 
                 try
                 {
-                    // ‰æ‘œ‚ª‚ ‚ê‚Î‚»‚ê‚ğg‚¤‚µ‚È‚¯‚ê‚Î•¶š‚ğ•`‰æ‚·‚é‚¼‚¢
+                    // ç”»åƒãŒã‚ã‚Œã°ãã‚Œã‚’ä½¿ã†ã—ãªã‘ã‚Œã°æ–‡å­—ã‚’æç”»ã™ã‚‹ãã„
                     if (mapping.ContainsKey(program.MailAddress) || mapping.ContainsKey(program.Title))
                     {
                         var imageUrl = mapping.ContainsKey(program.MailAddress)
@@ -160,14 +160,14 @@ namespace AgqrPlayer4Tv.Services
                             paint.Color = Color.White;
                             var textWidth = paint.MeasureText(program.Title);
 
-                            // ‰ñ“]‚·‚é
+                            // å›è»¢ã™ã‚‹
                             // canvas.Rotate(45);
                             //canvas.DrawText(program.Title, 0, 0, paint);
 
                             // 
                             // canvas.DrawText(program.Title, (bitmap.Width / 2) - (textWidth / 2), (bitmap.Height / 2) + (paint.TextSize / 2), paint);
 
-                            // Ü‚è•Ô‚µ‚Â‚Â•`‰æ
+                            // æŠ˜ã‚Šè¿”ã—ã¤ã¤æç”»
                             var margin = 16;
                             var textLayout = new StaticLayout(program.Title, textPaint, canvas.Width - (margin * 2), Layout.Alignment.AlignCenter, 1.0f, 0.0f, false);
                             canvas.Translate(margin, (canvas.Height / 2) - (textLayout.Height / 2));

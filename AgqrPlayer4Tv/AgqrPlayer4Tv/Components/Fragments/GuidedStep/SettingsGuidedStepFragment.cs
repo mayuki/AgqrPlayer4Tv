@@ -14,20 +14,20 @@ using Android.Support.V17.Leanback.Widget;
 namespace AgqrPlayer4Tv.Components.Fragments.GuidedStep
 {
     /// <summary>
-    /// İ’è‰æ–Ê‚Ìƒgƒbƒv‚Æ‚È‚éGuidedStepƒNƒ‰ƒX‚Å‚·B
+    /// è¨­å®šç”»é¢ã®ãƒˆãƒƒãƒ—ã¨ãªã‚‹GuidedStepã‚¯ãƒ©ã‚¹ã§ã™ã€‚
     /// </summary>
     public class SettingsGuidedStepFragment : GuidedStepFragment
     {
         public override GuidanceStylist.Guidance OnCreateGuidance(Bundle savedInstanceState)
         {
-            return new GuidanceStylist.Guidance("İ’è", "ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ÌŠeíİ’è‚ğs‚¢‚Ü‚·", "AgqrPlayer for Android TV", null);
+            return new GuidanceStylist.Guidance("è¨­å®š", "ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã®å„ç¨®è¨­å®šã‚’è¡Œã„ã¾ã™", "AgqrPlayer for Android TV", null);
         }
 
         public override void OnCreateActions(IList<GuidedAction> actions, Bundle savedInstanceState)
         {
-            actions.AddAction(0, "”zMŒ`®", "“®‰æ‚Ì”zMŒ`®‚ğİ’è‚µ‚Ü‚·");
-            actions.AddAction(1, "ƒvƒŒƒCƒ„[", "“®‰æ‚ÌƒvƒŒƒCƒ„[‚ğİ’è‚µ‚Ü‚·");
-            actions.AddAction(2, "‚±‚ÌƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚É‚Â‚¢‚Ä", "ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚É‚Â‚¢‚Ä‚Ìî•ñ‚ğ•\¦‚µ‚Ü‚·");
+            actions.AddAction(0, "é…ä¿¡å½¢å¼", "å‹•ç”»ã®é…ä¿¡å½¢å¼ã‚’è¨­å®šã—ã¾ã™");
+            actions.AddAction(1, "ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼", "å‹•ç”»ã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’è¨­å®šã—ã¾ã™");
+            actions.AddAction(2, "ã“ã®ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã«ã¤ã„ã¦", "ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã«ã¤ã„ã¦ã®æƒ…å ±ã‚’è¡¨ç¤ºã—ã¾ã™");
         }
 
         public override void OnGuidedActionClicked(GuidedAction action)
@@ -43,20 +43,20 @@ namespace AgqrPlayer4Tv.Components.Fragments.GuidedStep
 
 
     /// <summary>
-    /// İ’è: ”zMŒ`®İ’è‚ÌGuidedStepƒNƒ‰ƒX‚Å‚·B
+    /// è¨­å®š: é…ä¿¡å½¢å¼è¨­å®šã®GuidedStepã‚¯ãƒ©ã‚¹ã§ã™ã€‚
     /// </summary>
     public class StreamingSettingGuidedStepFragment : GuidedStepFragment
     {
         public override GuidanceStylist.Guidance OnCreateGuidance(Bundle savedInstanceState)
         {
-            return new GuidanceStylist.Guidance("”zMŒ`®", "“®‰æ‚Ì”zMŒ`®‚ğİ’è‚µ‚Ü‚·B‚±‚Ìİ’è‚ÍExoPlayer‚ğ—˜—p‚µ‚Ä‚¢‚éÛ‚É‚Ì‚İ—LŒø‚Å‚·", "İ’è", null);
+            return new GuidanceStylist.Guidance("é…ä¿¡å½¢å¼", "å‹•ç”»ã®é…ä¿¡å½¢å¼ã‚’è¨­å®šã—ã¾ã™ã€‚ã“ã®è¨­å®šã¯ExoPlayerã‚’åˆ©ç”¨ã—ã¦ã„ã‚‹éš›ã«ã®ã¿æœ‰åŠ¹ã§ã™", "è¨­å®š", null);
         }
 
         public override void OnCreateActions(IList<GuidedAction> actions, Bundle savedInstanceState)
         {
             var appPrefs = ApplicationMain.ServiceLocator.GetInstance<ApplicationPreference>();
-            actions.AddCheckAction(1, "RTMP", "RTMPŒ`®‚ğ—˜—p‚µ‚Ü‚·BPCŒü‚¯‚Ì”zMŒ`®‚Å’x‰„‚ª¬‚³‚ß‚Å‚·B’ÊM‚ª•sˆÀ’è‚É‚È‚é‚ÆƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ªƒNƒ‰ƒbƒVƒ…‚·‚éê‡‚ª‚ ‚è‚Ü‚·B", appPrefs.StreamingType.Value == StreamingType.Rtmp);
-            actions.AddCheckAction(2, "HLS", "HTTP Live StreamingŒ`®‚ğ—˜—p‚µ‚Ü‚·BƒXƒ}[ƒgƒtƒHƒ“Œü‚¯‚Ì”zMŒ`®‚Å’x‰„‚ª‘å‚«–Ú‚Å‚·", appPrefs.StreamingType.Value == StreamingType.Hls);
+            actions.AddCheckAction(1, "RTMP", "RTMPå½¢å¼ã‚’åˆ©ç”¨ã—ã¾ã™ã€‚PCå‘ã‘ã®é…ä¿¡å½¢å¼ã§é…å»¶ãŒå°ã•ã‚ã§ã™ã€‚é€šä¿¡ãŒä¸å®‰å®šã«ãªã‚‹ã¨ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ãŒã‚¯ãƒ©ãƒƒã‚·ãƒ¥ã™ã‚‹å ´åˆãŒã‚ã‚Šã¾ã™ã€‚", appPrefs.StreamingType.Value == StreamingType.Rtmp);
+            actions.AddCheckAction(2, "HLS", "HTTP Live Streamingå½¢å¼ã‚’åˆ©ç”¨ã—ã¾ã™ã€‚ã‚¹ãƒãƒ¼ãƒˆãƒ•ã‚©ãƒ³å‘ã‘ã®é…ä¿¡å½¢å¼ã§é…å»¶ãŒå¤§ãç›®ã§ã™", appPrefs.StreamingType.Value == StreamingType.Hls);
         }
 
         public override void OnGuidedActionClicked(GuidedAction action)
@@ -77,21 +77,21 @@ namespace AgqrPlayer4Tv.Components.Fragments.GuidedStep
     }
 
     /// <summary>
-    /// İ’è: ƒvƒŒƒCƒ„[İ’è‚ÌGuidedStepƒNƒ‰ƒX‚Å‚·B
+    /// è¨­å®š: ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼è¨­å®šã®GuidedStepã‚¯ãƒ©ã‚¹ã§ã™ã€‚
     /// </summary>
     public class PlayerSettingGuidedStepFragment : GuidedStepFragment
     {
         public override GuidanceStylist.Guidance OnCreateGuidance(Bundle savedInstanceState)
         {
-            return new GuidanceStylist.Guidance("ƒvƒŒƒCƒ„[", "“®‰æ‚ÌƒvƒŒƒCƒ„[‚ğİ’è‚µ‚Ü‚·", "İ’è", null);
+            return new GuidanceStylist.Guidance("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼", "å‹•ç”»ã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’è¨­å®šã—ã¾ã™", "è¨­å®š", null);
         }
 
         public override void OnCreateActions(IList<GuidedAction> actions, Bundle savedInstanceState)
         {
             var appPrefs = ApplicationMain.ServiceLocator.GetInstance<ApplicationPreference>();
-            actions.AddCheckAction(1, "ExoPlayer", "ExoPlayer‚ğ—˜—p‚µ‚Ü‚·B‚±‚ÌƒvƒŒƒCƒ„[‚Å‚ÍRTMP‚ğ—˜—p‰Â”\‚Å‚·B", appPrefs.PlayerType.Value == PlayerType.ExoPlayer);
-            actions.AddCheckAction(2, "MediaPlayer", "Android•W€‚ÌMediaPlayer‚ğ—˜—p‚µ‚Ü‚·B‚±‚ÌƒvƒŒƒCƒ„[‚Å‚ÍRTMP‚ğ—˜—p‚Å‚«‚Ü‚¹‚ñB", appPrefs.PlayerType.Value == PlayerType.AndroidDefault);
-            actions.AddCheckAction(3, "WebView", "WebView‚ğ—˜—p‚µ‚Ü‚·B‚±‚ÌƒvƒŒƒCƒ„[‚Å‚ÍRTMP‚ğ—˜—p‚Å‚«‚Ü‚¹‚ñB", appPrefs.PlayerType.Value == PlayerType.WebView);
+            actions.AddCheckAction(1, "ExoPlayer", "ExoPlayerã‚’åˆ©ç”¨ã—ã¾ã™ã€‚ã“ã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã§ã¯RTMPã‚’åˆ©ç”¨å¯èƒ½ã§ã™ã€‚", appPrefs.PlayerType.Value == PlayerType.ExoPlayer);
+            actions.AddCheckAction(2, "MediaPlayer", "Androidæ¨™æº–ã®MediaPlayerã‚’åˆ©ç”¨ã—ã¾ã™ã€‚ã“ã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã§ã¯RTMPã‚’åˆ©ç”¨ã§ãã¾ã›ã‚“ã€‚", appPrefs.PlayerType.Value == PlayerType.AndroidDefault);
+            actions.AddCheckAction(3, "WebView", "WebViewã‚’åˆ©ç”¨ã—ã¾ã™ã€‚ã“ã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã§ã¯RTMPã‚’åˆ©ç”¨ã§ãã¾ã›ã‚“ã€‚", appPrefs.PlayerType.Value == PlayerType.WebView);
         }
 
         public override void OnGuidedActionClicked(GuidedAction action)
@@ -113,13 +113,13 @@ namespace AgqrPlayer4Tv.Components.Fragments.GuidedStep
     }
 
     /// <summary>
-    /// İ’è: ‚±‚ÌƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚É‚Â‚¢‚Ä
+    /// è¨­å®š: ã“ã®ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã«ã¤ã„ã¦
     /// </summary>
     public class AboutSettingGuidedStepFragment : GuidedStepFragment
     {
         public override GuidanceStylist.Guidance OnCreateGuidance(Bundle savedInstanceState)
         {
-            return new GuidanceStylist.Guidance("AgqrPlayer for Android TV‚É‚Â‚¢‚Ä", "ƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚É‚Â‚¢‚Ä‚Ìî•ñ‚ğ•\¦‚µ‚Ü‚·", "İ’è", null);
+            return new GuidanceStylist.Guidance("AgqrPlayer for Android TVã«ã¤ã„ã¦", "ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã«ã¤ã„ã¦ã®æƒ…å ±ã‚’è¡¨ç¤ºã—ã¾ã™", "è¨­å®š", null);
         }
 
         public override void OnCreateActions(IList<GuidedAction> actions, Bundle savedInstanceState)
@@ -129,9 +129,9 @@ namespace AgqrPlayer4Tv.Components.Fragments.GuidedStep
             var packageInfo = Application.Context.PackageManager.GetPackageInfo(Application.Context.PackageName, PackageInfoFlags.MetaData);
 
             var index = 0;
-            actions.AddInfo(++index, "ƒo[ƒWƒ‡ƒ“î•ñ", $"{packageInfo.VersionName} (VersionCode {packageInfo.VersionCode})");
-            actions.AddInfo(++index, "ƒrƒ‹ƒh", buildDateTime.ToString());
-            actions.AddInfo(++index, "ƒfƒoƒCƒX", $"{Build.Manufacturer} {Build.Model}");
+            actions.AddInfo(++index, "ãƒãƒ¼ã‚¸ãƒ§ãƒ³æƒ…å ±", $"{packageInfo.VersionName} (VersionCode {packageInfo.VersionCode})");
+            actions.AddInfo(++index, "ãƒ“ãƒ«ãƒ‰æ™‚åˆ»", buildDateTime.ToString());
+            actions.AddInfo(++index, "ãƒ‡ãƒã‚¤ã‚¹", $"{Build.Manufacturer} {Build.Model}");
             actions.AddInfo(++index, "Android OS", $"{Build.VERSION.Release} (API {Build.VERSION.Sdk})");
         }
     }

@@ -115,7 +115,7 @@ namespace AgqrPlayer4Tv.Components.Fragments
                 .Subscribe(x =>
                 {
                     playbackControlsRow.CurrentTime = x*1000;
-                    //this._rowsAdapter.NotifyArrayItemRangeChanged(0, 1); // こっちは通知してはダメ(ガコガコする
+                    //this._rowsAdapter.NotifyArrayItemRangeChanged(0, 1); // 縺薙▲縺｡縺ｯ騾夂衍縺励※縺ｯ繝繝｡(繧ｬ繧ｳ繧ｬ繧ｳ縺吶ｋ
                 })
                 .AddTo(this.LifetimeDisposables);
 

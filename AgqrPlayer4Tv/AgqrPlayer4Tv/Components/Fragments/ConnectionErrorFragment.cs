@@ -26,10 +26,10 @@ namespace AgqrPlayer4Tv.Components.Fragments
         private void SetErrorContent()
         {
             ImageDrawable = Activity.GetDrawable(Resource.Drawable.lb_ic_sad_cloud);
-            Message = "’ZŠÔ‚ÌŠÔ‚É˜A‘±‚ÅÚ‘±‚É¸”s‚µ‚Ü‚µ‚½B";
+            Message = "çŸ­æ™‚é–“ã®é–“ã«é€£ç¶šã§æ¥ç¶šã«å¤±æ•—ã—ã¾ã—ãŸã€‚";
             SetDefaultBackground(true);
 
-            ButtonText = "İ’è‚ğŠJ‚­";
+            ButtonText = "è¨­å®šã‚’é–‹ã";
             ButtonClickListener = this;
         }
 

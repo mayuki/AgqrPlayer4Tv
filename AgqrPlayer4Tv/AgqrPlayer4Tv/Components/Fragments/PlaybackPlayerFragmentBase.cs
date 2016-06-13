@@ -74,7 +74,7 @@ namespace AgqrPlayer4Tv.Components.Fragments
 
         private void ObserveError()
         {
-            // 1秒を置いてリトライ、リトライ回数は30秒間に最大5回。
+            // 1遘偵ｒ鄂ｮ縺�縺ｦ繝ｪ繝医Λ繧､縲√Μ繝医Λ繧､蝗樊焚縺ｯ30遘帝俣縺ｫ譛螟ｧ5蝗槭�
             this._onError
                 .Delay(TimeSpan.FromSeconds(1))
                 .Do(x => Log.Debug(Tag, "ERROR!"))
