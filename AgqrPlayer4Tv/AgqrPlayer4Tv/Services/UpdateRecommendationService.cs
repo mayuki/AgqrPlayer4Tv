@@ -55,7 +55,7 @@ namespace AgqrPlayer4Tv.Services
             {
                 using (var httpClient = new HttpClient())
                 {
-                    csvData = await httpClient.GetStringAsync($"https://gist.githubusercontent.com/mayuki/666284fb3a80abaaaf39235050e840c5/raw/AgqrProgramImageMapping.csv?{DateTime.Now.Ticks}");
+                    csvData = await httpClient.GetStringAsync($"https://raw.githubusercontent.com/mayuki/AgqrPlayer4Tv/master/Extra/AgqrProgramImageMapping.csv?{DateTime.Now.Ticks}");
                 }
             }
             catch (Exception ex)
