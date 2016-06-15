@@ -12,5 +12,8 @@
     <item name="android:colorPrimaryDark">@color/AccentDark</item>
     <!--   theme UI controls like checkboxes and text fields -->
     <item name="android:colorAccent">@color/Accent</item>
+
+    <item name="android:windowAllowReturnTransitionOverlap">true</item>
+    <item name="android:windowAllowEnterTransitionOverlap">true</item>
   </style>
 </resources>
