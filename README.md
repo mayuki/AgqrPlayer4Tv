@@ -1,6 +1,8 @@
 # AgqrPlayer4Tv
 超A&amp;G+をAndroid TVで再生するための雑なアプリ
 
+![](https://misuzilla.visualstudio.com/_apis/public/build/definitions/da229307-e547-487a-90f4-e5923d3d3a91/1/badge)
+
 ![AgqrPlayer4Tv](AgqrPlayer4Tv/AgqrPlayer4Tv/Resources/drawable-xhdpi/Banner.png)
 
 Android TVで超A&amp;G+を再生します。
