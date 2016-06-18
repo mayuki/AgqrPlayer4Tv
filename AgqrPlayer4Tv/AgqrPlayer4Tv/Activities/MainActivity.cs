@@ -92,6 +92,23 @@ namespace AgqrPlayer4Tv.Activities
             ApplicationMain.ServiceLocator.GetInstance<ApplicationPreference>().IsLastShutdownCorrectly.Value = false; // 正常シャットダウンフラグを折っておく
         }
 
+        public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
+        {
+            if (keyCode == Keycode.MediaPlayPause)
+            {
+                if (this._playerFragment.IsPlaying.Value)
+                {
+                    this._playerFragment.Stop();
+                }
+                else
+                {
+                    this._playerFragment.Play();
+                }
+                return true;
+            }
+
+            return base.OnKeyDown(keyCode, e);
+        }
     }
 }
 
