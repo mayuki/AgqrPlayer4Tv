@@ -1,5 +1,5 @@
 # AgqrPlayer4Tv
-超A&amp;G+をAndroid TVで再生するための雑なアプリ
+超A&amp;G+をAndroid TVで再生するための雑な非公式アプリ
 
 ![](https://misuzilla.visualstudio.com/_apis/public/build/definitions/da229307-e547-487a-90f4-e5923d3d3a91/1/badge)
 
@@ -15,6 +15,10 @@ Android TVで超A&amp;G+を再生します。
   - WebView
 
 ## 使い方
+### Google Playからインストール
+https://play.google.com/store/apps/details?id=org.misuzilla.agqrplayer4tv
+
+### APKからインストール
 1. apk を何とかしてインストールします(ESファイルエクスプローラーとか。apkは[releases](https://github.com/mayuki/AgqrPlayer4Tv/releases)にあります)
 2. ホームから起動します
 3. 何かリモコンのボタンを押します
