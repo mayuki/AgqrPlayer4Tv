@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using AgqrPlayer4Tv.Activities;
 using AgqrPlayer4Tv.Infrastracture;
+using AgqrPlayer4Tv.Infrastracture.Extensions;
 using AgqrPlayer4Tv.Model;
 using Android.App;
 using Android.Content;
@@ -25,6 +26,8 @@ namespace AgqrPlayer4Tv.Services
 
         public override void OnCreate()
         {
+            ApplicationMain.InitializeIfNeeded(this, this.Application);
+
             Log.Debug(Tag, "OnCreate");
 
             if (this._notificationManager == null)
@@ -45,6 +48,7 @@ namespace AgqrPlayer4Tv.Services
             catch (Exception ex)
             {
                 Log.Error(Tag, ex.ToString());
+                HockeyApp.Metrics.MetricsManager.TrackEvent("Failed.UpdateRecommendationService-UpdateNotification");
             }
         }
 
@@ -60,6 +64,7 @@ namespace AgqrPlayer4Tv.Services
             }
             catch (Exception ex)
             {
+                HockeyApp.Metrics.MetricsManager.TrackEvent("Failed.UpdateRecommendationService-GetProgramImageMappingAsync.Request");
                 Log.Error(Tag, ex.ToString());
             }
 
@@ -97,7 +102,7 @@ namespace AgqrPlayer4Tv.Services
             var colorAccentDark = Resources.GetColor(Resource.Color.AccentDark);
 
             var timetable = ApplicationMain.ServiceLocator.GetInstance<Timetable>();
-            var timetableDataset = timetable.GetDatasetAsync().Result;
+            var timetableDataset = await timetable.GetDatasetAsync().ConfigureAwait(false);
             var now = LogicalDateTime.Now;
 
             // 番組と番組の画像のマッピング

@@ -114,6 +114,8 @@ namespace AgqrPlayer4Tv.Components.Fragments
 
         protected void ReportError()
         {
+            HockeyApp.Metrics.MetricsManager.TrackEvent("Failed." + this.GetType().Name + "-ReportError");
+
             this._onError.OnNext(Unit.Default);
         }
 

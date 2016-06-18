@@ -72,6 +72,8 @@ namespace AgqrPlayer4Tv.Model
                 }
                 catch (Exception ex)
                 {
+                    HockeyApp.Metrics.MetricsManager.TrackEvent("Failed.Timetable-FetchAndParseAsync");
+
                     Log.Error(Tag, ex.ToString());
                     var programsByDayofweek = new Dictionary<DayOfWeek, List<TimetableProgram>>();
                     for (var i = 0; i < 7; i++) { programsByDayofweek[(DayOfWeek)i] = new List<TimetableProgram>(); }

@@ -127,7 +127,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activities\BootupActivity.cs" />
+    <Compile Include="BroadcastReceivers\BootupBroadcastReceiver.cs" />
     <Compile Include="Activities\ErrorActivity.cs" />
     <Compile Include="Activities\SettingsActivity.cs" />
     <Compile Include="ApplicationMain.cs" />
@@ -148,7 +148,7 @@
     <Compile Include="Components\Fragments\AgqrPlaybackOverlayFragment.cs" />
     <Compile Include="Components\AgWebChromeClient.cs" />
     <Compile Include="Components\AgWebViewClient.cs" />
-    <Compile Include="Infrastracture\DisplayExtension.cs" />
+    <Compile Include="Infrastracture\Extensions\DisplayExtension.cs" />
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="Infrastracture\DisposableModelBase.cs" />
     <Compile Include="Infrastracture\Extensions\ClassPresenterSelectorExtensions.cs" />
@@ -195,12 +195,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <XamarinComponentReference Include="hockeyappandroid">
-      <Visible>False</Visible>
-      <Version>4.1.0</Version>
-    </XamarinComponentReference>
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\values\Colors.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -227,6 +221,12 @@
       <Project>{e4c0d020-f8c8-4e53-8af2-5fcedfbe51cf}</Project>
       <Name>RtmpClient</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <XamarinComponentReference Include="hockeyappandroid">
+      <Visible>False</Visible>
+      <Version>4.1.0.1</Version>
+    </XamarinComponentReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

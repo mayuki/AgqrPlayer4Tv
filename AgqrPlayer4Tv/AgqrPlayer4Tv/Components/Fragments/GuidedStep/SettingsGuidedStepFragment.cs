@@ -129,10 +129,15 @@ namespace AgqrPlayer4Tv.Components.Fragments.GuidedStep
             var packageInfo = Application.Context.PackageManager.GetPackageInfo(Application.Context.PackageName, PackageInfoFlags.MetaData);
 
             var index = 0;
+#if DEBUG
+            actions.AddInfo(++index, "バージョン情報", $"{packageInfo.VersionName} (VersionCode {packageInfo.VersionCode}), Debug");
+#else
             actions.AddInfo(++index, "バージョン情報", $"{packageInfo.VersionName} (VersionCode {packageInfo.VersionCode})");
+#endif
             actions.AddInfo(++index, "ビルド時刻", buildDateTime.ToString());
             actions.AddInfo(++index, "デバイス", $"{Build.Manufacturer} {Build.Model}");
             actions.AddInfo(++index, "Android OS", $"{Build.VERSION.Release} (API {Build.VERSION.Sdk})");
+
         }
     }
 }

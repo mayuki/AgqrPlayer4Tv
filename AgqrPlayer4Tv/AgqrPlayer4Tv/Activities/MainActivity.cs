@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using HockeyApp;
 using Reactive.Bindings;
+using AgqrPlayer4Tv.BroadcastReceivers;
 
 namespace AgqrPlayer4Tv.Activities
 {
@@ -21,9 +22,10 @@ namespace AgqrPlayer4Tv.Activities
 
         protected override void OnCreate(Bundle bundle)
         {
-            CrashManager.Register(this);
+            ApplicationMain.InitializeIfNeeded(this, Application);
 
-            BootupActivity.ScheduleRecommendationUpdate(ApplicationContext);
+            // スケジュールして、同時にサービスを起動する
+            BootupBroadcastReceiver.ScheduleRecommendationUpdate(ApplicationContext);
             StartService(new Intent(this, typeof(UpdateRecommendationService)));
 
             // DayDream(スクリーンセーバー)を抑制する
