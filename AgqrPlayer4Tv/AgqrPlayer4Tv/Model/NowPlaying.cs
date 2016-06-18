@@ -19,7 +19,7 @@ namespace AgqrPlayer4Tv.Model
         {
             this.Program = Observable.Return(0L).Merge(Observable.Interval(TimeSpan.FromSeconds(10)))
                 .SelectMany(async x => await timetable.GetDatasetAsync())
-                .Select(x => x.Data[LogicalDateTime.Now.DayOfWeek].FirstOrDefault(y => y.IsNowPlaying))
+                .Select(x => x?.Data[LogicalDateTime.Now.DayOfWeek].FirstOrDefault(y => y.IsNowPlaying))
                 .ToReadOnlyReactiveProperty()
                 .AddTo(this);
 
