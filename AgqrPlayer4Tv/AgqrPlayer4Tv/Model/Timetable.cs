@@ -119,18 +119,13 @@ namespace AgqrPlayer4Tv.Model
                     {
                         rowspans[dayOfWeek] = Int32.Parse(rowspanAttr.Groups[1].Value) - 1;
                     }
-                    var titleE = Regex.Match(col.Value, "<div class=\"title-p\">(.*?)</div>", RegexOptions.Singleline);
+                    var titleE = Regex.Match(col.Value, "<div [^>]*?class=\"title-p\"[^>]*?>(.*?)</div>", RegexOptions.Singleline);
                     var mailtoE = Regex.Match(col.Value, "<a href=\"mailto:([^\"]+)", RegexOptions.Singleline);
-                    var timeE = Regex.Match(col.Value, "<div class=\"time\">(?:.*?)(\\d+:\\d+)", RegexOptions.Singleline);
+                    var timeE = Regex.Match(col.Value, "<div [^>]*?class=\"time\"[^>]*?>(?:.*?)(\\d+:\\d+)", RegexOptions.Singleline);
                     var title = Regex.Replace(titleE.Groups[1].Value.Trim(), "<[^>]+>", "");
-                    var time = TimeSpan.Parse(timeE.Groups[1].Value.Trim());
+                    var time = LogicalDateTime.ParseTimeSpanFor30Hours(timeE.Groups[1].Value.Trim());
                     var mailto = mailtoE.Success ? Uri.UnescapeDataString(mailtoE.Groups[1].Value).Trim() : "";
                     //$"{dayOfWeek}: [{time}] {title} / {mailto}".Dump();
-
-                    if (time.TotalHours >= 0 && time.TotalHours <= 5)
-                    {
-                        time = time.Add(TimeSpan.FromHours(24));
-                    }
 
                     if (programsByDayofweek[dayOfWeek].Any())
                     {

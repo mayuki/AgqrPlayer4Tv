@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace AgqrPlayer4Tv.Model
 {
@@ -41,6 +42,24 @@ namespace AgqrPlayer4Tv.Model
 
                 return new LogicalDateTime(nowDayOfWeek, nowTime);
             }
+        }
+
+        /// <summary>
+        /// 30時間形式で文字列をパースしてTimeSpanを返します。
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static TimeSpan ParseTimeSpanFor30Hours(string value)
+        {
+            var time = new TimeSpan(0);
+            var match = Regex.Match(value, @"^(\d{1,2}):(\d{1,2})");
+            if (!match.Success) throw new ArgumentException("invalid time format");
+
+            var hours = Double.Parse(match.Groups[1].Value);
+
+            return new TimeSpan()
+                .Add(TimeSpan.FromHours((hours >= 0 && hours <= 5) ? 24 + hours : hours))
+                .Add(TimeSpan.FromMinutes(Double.Parse(match.Groups[2].Value)));
         }
     }
 }
