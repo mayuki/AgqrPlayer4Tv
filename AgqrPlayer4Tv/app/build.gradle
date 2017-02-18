@@ -1,0 +1,57 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        applicationId "org.misuzilla.agqrplayer4tv"
+        minSdkVersion 22
+        targetSdkVersion 25
+        versionCode 5
+        versionName "2.5.0.0"
+    }
+    buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile 'com.android.support:leanback-v17:25.0.1'
+    compile 'com.android.support:preference-leanback-v17:25.0.1'
+    compile 'com.android.support:appcompat-v7:25.0.1'
+    compile 'com.android.support:support-fragment:25.0.1'
+    compile 'com.android.support:recommendation:25.0.1'
+    compile 'com.android.support:support-v4:25.0.1'
+    compile 'com.github.bumptech.glide:glide:3.4.+'
+    compile 'net.butterflytv.utils:rtmp-client:0.2.6'
+    compile 'com.google.android.exoplayer:exoplayer:r2.0.4'
+    compile 'com.squareup.okhttp3:okhttp:3.5.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.google.code.gson:gson:2.8.0'
+    compile 'io.reactivex:rxjava:1.1.6'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'com.jakewharton.threetenabp:threetenabp:1.0.4'
+    compile 'com.github.k-kagurazaka.rx-property-android:rx-property:2.0.0'
+    compile 'com.github.k-kagurazaka.rx-property-android:rx-property-kotlin:2.0.0'
+
+    def mobileCenterSdkVersion = '0.3.3'
+    compile "com.microsoft.azure.mobile:mobile-center-analytics:${mobileCenterSdkVersion}"
+    compile "com.microsoft.azure.mobile:mobile-center-crashes:${mobileCenterSdkVersion}"
+}
+
+repositories {
+    mavenCentral()
+    maven { url "https://jitpack.io" } // RxProperty
+}

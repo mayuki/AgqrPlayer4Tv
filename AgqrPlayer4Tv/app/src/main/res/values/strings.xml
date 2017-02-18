@@ -1,0 +1,83 @@
+<resources>
+    <string name="app_name">AgqrPlayer for Android TV</string>
+
+    <string name="url_timetable">http://www.agqr.jp/timetable/streaming.html</string>
+    <string name="url_image_mapping">https://raw.githubusercontent.com/mayuki/AgqrPlayer4Tv/master/Extra/AgqrProgramImageMapping.csv</string>
+    <string name="url_json_timetable">https://agqrplayer4tv.blob.core.windows.net/data/timetable.json</string>
+    <string name="url_hls">http://ic-www.uniqueradio.jp/hls/m3u8.php</string>
+    <string name="url_rtmp">rtmp://fms-base1.mitene.ad.jp:1935/agqr/aandg22 live=1</string>
+    <string name="url_web">http://www.uniqueradio.jp/agplayerf/newplayerf2-sp.php</string>
+    <string name="user_agent">Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.23 Mobile Safari/537.36</string>
+
+    <!-- Shared Action -->
+    <string name="action_ok">OK</string>
+    <string name="action_cancel">キャンセル</string>
+
+
+    <!-- Recommendation -->
+    <string name="recommendation_upcoming">次の番組: %1$sから</string>
+    <string name="recommendation_current">現在放送中: %1$sまで</string>
+
+    <!-- CancelAllSchedulesConfirmationGuidedStepFragment -->
+    <string name="cancel_all_schedules_confirmation">すべての予約を解除</string>
+    <string name="cancel_all_schedules_confirmation_description">現在設定中の予約をすべて解除しますか?</string>
+
+    <!-- PlayConfirmationFragment -->
+    <string name="play_confirmation_description">%1$s\n%2$sから開始\n%3$s</string>
+    <string name="play_confirmation_description_scheduled">予約済み</string>
+    <string name="play_confirmation_open_player">プレイヤーを開く</string>
+    <string name="play_confirmation_open_player_description">超A&amp;G+を今すぐ再生します</string>
+    <string name="play_confirmation_set_timer">視聴を予約</string>
+    <string name="play_confirmation_set_timer_description">%sに再生を開始します</string>
+    <string name="play_confirmation_cancel_timer">視聴予約をキャンセル</string>
+    <string name="play_confirmation_cancel_timer_description">現在登録中の視聴予約をキャンセルします</string>
+
+    <!-- PlaybackOverlay/Rows: Upcoming -->
+    <string name="playback_rows_upcoming_header">これからの番組</string>
+
+    <!-- PlaybackOverlay/Rows: Settings -->
+    <string name="playback_rows_settings_header">設定</string>
+    <string name="playback_rows_settings_schedules_clear">すべての予約を解除</string>
+    <string name="playback_rows_settings_schedules_clear_description">%s件の予約</string>
+    <string name="playback_rows_settings_settings">設定</string>
+    <string name="playback_rows_settings_about">AgqrPlayerについて</string>
+
+    <!-- Error/Error messages -->
+    <string name="error_connection_failed_repeatedly">短時間の間に連続で接続に失敗しました。</string>
+    <string name="error_open_setting">設定を開く</string>
+
+    <!-- Playback/Web View -->
+    <string name="playback_webview_reload">リロード</string>
+    <string name="playback_webview_settings">設定</string>
+
+    <!-- GuidedStep -->
+    <string name="guidedstep_settings_title">設定</string>
+    <string name="guidedstep_settings_description">アプリケーションの各種設定を行います</string>
+
+    <!-- GuidedStep/About -->
+    <string name="guidedstep_about_app_title">AgqrPlayer for Android TVについて</string>
+    <string name="guidedstep_about_app_description">アプリケーションについての情報を表示します</string>
+    <string name="guidedstep_about_app_version">バージョン情報</string>
+    <string name="guidedstep_about_app_build">ビルド時刻</string>
+    <string name="guidedstep_about_app_android">Android OS</string>
+    <string name="guidedstep_about_app_device">デバイス</string>
+
+    <!-- GuidedStep/Player -->
+    <string name="guidedstep_player_title">プレイヤー</string>
+    <string name="guidedstep_player_description">動画のプレイヤーを設定します</string>
+    <string name="guidedstep_player_type_exoplayer">ExoPlayer</string>
+    <string name="guidedstep_player_type_exoplayer_description">ExoPlayerを利用します。このプレイヤーではRTMPを利用可能です</string>
+    <string name="guidedstep_player_type_default">MediaPlayer</string>
+    <string name="guidedstep_player_type_default_description">Android標準のMediaPlayerを利用します。このプレイヤーではRTMPを利用できません</string>
+    <string name="guidedstep_player_type_webview">WebView</string>
+    <string name="guidedstep_player_type_webview_description">WebViewを利用します。このプレイヤーではRTMPを利用できません</string>
+
+    <!-- GuidedStep/Streaming -->
+    <string name="guidedstep_streaming_title">配信形式</string>
+    <string name="guidedstep_streaming_description">動画の配信形式を設定します</string>
+    <string name="guidedstep_streaming_description_long">動画の配信形式を設定します。\nこの設定はExoPlayerを利用している場合にのみ有効です</string>
+    <string name="guidedstep_streaming_type_rtmp">RTMP</string>
+    <string name="guidedstep_streaming_type_rtmp_description">RTMP形式を利用します。PC向けの配信形式で遅延は小さくなりますが安定性は低めです</string>
+    <string name="guidedstep_streaming_type_hls">HLS</string>
+    <string name="guidedstep_streaming_type_hls_description">HTTP Live Streaming形式を利用します。スマートフォン向けの配信形式で遅延が大き目です</string>
+</resources>
