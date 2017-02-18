@@ -1,7 +1,7 @@
 # AgqrPlayer4Tv
 超A&amp;G+をAndroid TVで再生するための雑なアプリ
 
-![app_icon_your_company](src/app/src/main/res/drawable/app_icon_your_company.png)
+![](AgqrPlayer4Tv/app/src/main/res/mipmap-xhdpi/banner.png)
 
 Android TVで超A&amp;G+を再生します。
 
