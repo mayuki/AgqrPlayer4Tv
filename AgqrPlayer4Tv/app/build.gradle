@@ -7,7 +7,7 @@ android {
         applicationId "org.misuzilla.agqrplayer4tv"
         minSdkVersion 22
         targetSdkVersion 27
-        versionCode 5
+        versionCode 7
         versionName "2.5.0.0"
     }
     buildTypes {
@@ -27,6 +27,10 @@ android {
         exclude 'android/databinding/DataBinderMapper.java'
         exclude 'android/databinding/DataBindingComponent.java'
         exclude 'android/databinding/DynamicUtil.java'
+    }
+
+    dexOptions {
+        jumboMode true
     }
 }
 
