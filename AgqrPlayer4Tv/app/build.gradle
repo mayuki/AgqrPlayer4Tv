@@ -69,10 +69,11 @@ dependencies {
     implementation 'com.github.k-kagurazaka.rx-property-android:rx-property:2.0.0'
     implementation 'com.github.k-kagurazaka.rx-property-android:rx-property-kotlin:2.0.0'
 
-    // App Center
-    def mobileCenterSdkVersion = '0.3.3'
-    implementation "com.microsoft.azure.mobile:mobile-center-analytics:${mobileCenterSdkVersion}"
-    implementation "com.microsoft.azure.mobile:mobile-center-crashes:${mobileCenterSdkVersion}"
+    // Visual Studio App Center
+    def appCenterSdkVersion = '1.2.0'
+    implementation 'com.android.support:support-v4:27.+'
+    implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
+    implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
 }
 
 repositories {
