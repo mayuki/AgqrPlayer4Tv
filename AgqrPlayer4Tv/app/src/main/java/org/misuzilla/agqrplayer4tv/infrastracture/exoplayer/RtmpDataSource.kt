@@ -29,7 +29,7 @@ class RtmpDataSource : DataSource {
     }
 
     override fun read(buffer: ByteArray?, offset: Int, readLength: Int): Int {
-        if (rtmpClient.isConnected == 0) return 0
+        if (!rtmpClient.isConnected) return 0
         return rtmpClient.read(buffer, offset, readLength)
     }
 

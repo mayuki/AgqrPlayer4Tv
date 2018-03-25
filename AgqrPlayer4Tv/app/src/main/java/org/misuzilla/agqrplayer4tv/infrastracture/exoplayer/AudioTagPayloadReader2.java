@@ -18,6 +18,7 @@ package org.misuzilla.agqrplayer4tv.infrastracture.exoplayer;
 import android.util.Pair;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.Format;
+import com.google.android.exoplayer2.ParserException;
 import com.google.android.exoplayer2.extractor.TrackOutput;
 import com.google.android.exoplayer2.util.CodecSpecificDataUtil;
 import com.google.android.exoplayer2.util.MimeTypes;
@@ -82,13 +83,18 @@ import java.util.Collections;
         if (packetType == AAC_PACKET_TYPE_SEQUENCE_HEADER && !hasOutputFormat) {
             byte[] audioSpecifiConfig = new byte[data.bytesLeft()];
             data.readBytes(audioSpecifiConfig, 0, audioSpecifiConfig.length);
-            Pair<Integer, Integer> audioParams = CodecSpecificDataUtil.parseAacAudioSpecificConfig(
-                    audioSpecifiConfig);
-            Format format = Format.createAudioSampleFormat(null, MimeTypes.AUDIO_AAC, null,
-                    Format.NO_VALUE, Format.NO_VALUE, audioParams.second, audioParams.first,
-                    Collections.singletonList(audioSpecifiConfig), null, 0, null);
-            output.format(format);
-            hasOutputFormat = true;
+            try {
+                Pair<Integer, Integer> audioParams = CodecSpecificDataUtil.parseAacAudioSpecificConfig(
+                        audioSpecifiConfig);
+                Format format = Format.createAudioSampleFormat(null, MimeTypes.AUDIO_AAC, null,
+                        Format.NO_VALUE, Format.NO_VALUE, audioParams.second, audioParams.first,
+                        Collections.singletonList(audioSpecifiConfig), null, 0, null);
+                output.format(format);
+                hasOutputFormat = true;
+            } catch (ParserException ex) {
+                hasOutputFormat = false;
+            }
+
         } else if (packetType == AAC_PACKET_TYPE_AAC_RAW) {
             // Sample audio AAC frames
             int bytesToWrite = data.bytesLeft();

@@ -8,9 +8,9 @@ import org.misuzilla.agqrplayer4tv.model.NowPlaying
 import org.misuzilla.agqrplayer4tv.model.Timetable
 import org.misuzilla.agqrplayer4tv.model.preference.ApplicationPreference
 import com.jakewharton.threetenabp.AndroidThreeTen
-import com.microsoft.azure.mobile.MobileCenter
-import com.microsoft.azure.mobile.analytics.Analytics
-import com.microsoft.azure.mobile.crashes.Crashes
+import com.microsoft.appcenter.AppCenter
+import com.microsoft.appcenter.analytics.Analytics
+import com.microsoft.appcenter.crashes.Crashes
 import org.misuzilla.agqrplayer4tv.component.service.UpdateRecommendationService
 import org.misuzilla.agqrplayer4tv.model.Reservation
 
@@ -18,7 +18,7 @@ class AgqrPlayerApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        MobileCenter.start(this, "ffc14c3d-6ca4-4a90-b3e3-ee8e8416183f", Analytics::class.java, Crashes::class.java)
+        AppCenter.start(this, "ffc14c3d-6ca4-4a90-b3e3-ee8e8416183f", Analytics::class.java, Crashes::class.java)
 
         ApplicationPreference.initialize(this)
         AndroidThreeTen.init(this)

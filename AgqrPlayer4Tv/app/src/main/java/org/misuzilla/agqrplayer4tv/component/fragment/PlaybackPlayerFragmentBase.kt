@@ -24,9 +24,9 @@ import java.util.concurrent.TimeUnit
 abstract class PlaybackPlayerFragmentBase : Fragment() {
     private val onError = BehaviorSubject.create<Unit>()
 
-    protected val URL_HLS: String get () = context.getString(R.string.url_hls)
-    protected val URL_RTMP: String get () = context.getString(R.string.url_rtmp)
-    protected val USER_AGENT: String get () = context.getString(R.string.user_agent)
+    protected val URL_HLS: String get () = context!!.getString(R.string.url_hls)
+    protected val URL_RTMP: String get () = context!!.getString(R.string.url_rtmp)
+    protected val USER_AGENT: String get () = context!!.getString(R.string.user_agent)
 
     protected val subscriptions = CompositeSubscription()
 

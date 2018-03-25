@@ -17,23 +17,23 @@ import java.util.*
  */
 class AboutSettingGuidedStepFragment : GuidedStepSupportFragment() {
     override fun onCreateGuidance(savedInstanceState: Bundle?): GuidanceStylist.Guidance {
-        return GuidanceStylist.Guidance(context.getString(R.string.guidedstep_about_app_title), context.getString(R.string.guidedstep_about_app_description), context.getString(R.string.guidedstep_settings_title), null)
+        return GuidanceStylist.Guidance(context!!.getString(R.string.guidedstep_about_app_title), context!!.getString(R.string.guidedstep_about_app_description), context!!.getString(R.string.guidedstep_settings_title), null)
     }
 
     override fun onCreateActions(actions: MutableList<GuidedAction>, savedInstanceState: Bundle?) {
-        val packageInfo = context.packageManager.getPackageInfo(context.packageName, PackageManager.GET_META_DATA);
+        val packageInfo = context!!.packageManager.getPackageInfo(context!!.packageName, PackageManager.GET_META_DATA);
         with (actions) {
             var index = 0
-            addInfo(context, ++index, context.getString(R.string.guidedstep_about_app_version),
+            addInfo(context!!, ++index, context!!.getString(R.string.guidedstep_about_app_version),
                 if (BuildConfig.DEBUG) {
                     "${packageInfo.versionName} (VersionCode ${packageInfo.versionCode}), Debug"
                 } else {
                     "${packageInfo.versionName} (VersionCode ${packageInfo.versionCode})"
                 }
             )
-            addInfo(context, ++index, context.getString(R.string.guidedstep_about_app_build), "${SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(Date(packageInfo.lastUpdateTime))}")
-            addInfo(context, ++index, context.getString(R.string.guidedstep_about_app_device), "${Build.MANUFACTURER} ${Build.MODEL}")
-            addInfo(context, ++index, context.getString(R.string.guidedstep_about_app_android), "${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})")
+            addInfo(context!!, ++index, context!!.getString(R.string.guidedstep_about_app_build), "${SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(Date(packageInfo.lastUpdateTime))}")
+            addInfo(context!!, ++index, context!!.getString(R.string.guidedstep_about_app_device), "${Build.MANUFACTURER} ${Build.MODEL}")
+            addInfo(context!!, ++index, context!!.getString(R.string.guidedstep_about_app_android), "${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})")
         }
     }
 }

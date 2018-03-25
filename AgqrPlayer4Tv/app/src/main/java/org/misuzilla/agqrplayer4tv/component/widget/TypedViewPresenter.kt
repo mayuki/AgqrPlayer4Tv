@@ -13,7 +13,8 @@ abstract class TypedViewPresenter<TView, TValue> : TypedPresenter<TValue>() wher
     final override fun onBindViewHolderWithItem(viewHolder: ViewHolder, item: TValue) {
         return onBindViewHolderWithItem(viewHolder, viewHolder.view as TView, item)
     }
-    final override fun onCreateViewHolder(parent: ViewGroup): ViewHolder {
+
+    override fun onCreateViewHolder(parent: ViewGroup): ViewHolder {
         return ViewHolder(onCreateView(parent))
     }
 

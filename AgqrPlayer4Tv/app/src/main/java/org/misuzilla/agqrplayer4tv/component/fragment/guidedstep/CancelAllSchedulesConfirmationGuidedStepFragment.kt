@@ -13,20 +13,20 @@ import org.misuzilla.agqrplayer4tv.model.Reservation
 class CancelAllSchedulesConfirmationGuidedStepFragment  : GuidedStepSupportFragment() {
 
     override fun onCreateGuidance(savedInstanceState: Bundle?): GuidanceStylist.Guidance {
-        return GuidanceStylist.Guidance(context.getString(R.string.cancel_all_schedules_confirmation),
-                context.getString(R.string.cancel_all_schedules_confirmation_description),
-                context.getString(R.string.app_name),
+        return GuidanceStylist.Guidance(context!!.getString(R.string.cancel_all_schedules_confirmation),
+                context!!.getString(R.string.cancel_all_schedules_confirmation_description),
+                context!!.getString(R.string.app_name),
                 null)
     }
 
     override fun onCreateActions(actions: MutableList<GuidedAction>, savedInstanceState: Bundle?) {
         actions.add(GuidedAction.Builder(context)
                 .id(ACTION_CANCEL.toLong())
-                .title(context.getString(R.string.action_cancel))
+                .title(context!!.getString(R.string.action_cancel))
                 .build())
         actions.add(GuidedAction.Builder(context)
                 .id(ACTION_OK.toLong())
-                .title(context.getString(R.string.action_ok))
+                .title(context!!.getString(R.string.action_ok))
                 .build())
     }
 

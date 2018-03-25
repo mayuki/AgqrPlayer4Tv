@@ -44,7 +44,7 @@ class PlaybackDefaultVideoViewFragment : PlaybackPlayerFragmentBase() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         Log.d(TAG, "onCreateView")
         val view = inflater.inflate(R.layout.playback_controls, container, false)
-        videoView.set(view.findViewById(R.id.video_view) as VideoView)
+        videoView.set(view.findViewById(R.id.video_view))
 
         videoView.asObservable()
                 .filter { it != null }

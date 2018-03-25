@@ -29,7 +29,7 @@ import rx.subscriptions.CompositeSubscription
 /**
  * これからの番組一覧のカードを表示するためのPresenterクラスです。
  */
-class ProgramCardPresenter : TypedViewPresenter<ImageCardView, Pair<Single<Map<String, String>>, TimetableProgram>>() {
+class ProgramCardPresenter : TypedViewPresenter<ImageCardView, ProgramCardPresenter.Item>() {
     private val subscriptions = CompositeSubscription()
 
     override fun onUnbindViewHolder(viewHolder: ViewHolder, view: ImageCardView) {
@@ -40,30 +40,28 @@ class ProgramCardPresenter : TypedViewPresenter<ImageCardView, Pair<Single<Map<S
         return ImageCardView(parent.context)
     }
 
-    override fun onBindViewHolderWithItem(viewHolder: ViewHolder, view: ImageCardView, item: Pair<Single<Map<String, String>>, TimetableProgram>) {
-        val (mappingTask, program) = item
+    override fun onBindViewHolderWithItem(viewHolder: ViewHolder, view: ImageCardView, item: Item) {
 
         view.apply {
-            titleText = program.title
-            contentText = "${program.start.toShortString()}～"
+            titleText = item.program.title
+            contentText = "${item.program.start.toShortString()}～"
             val width = context.resources.displayMetrics.toDevicePixel(context.resources.getDimension(R.dimen.recommendation_empty_width))
             val height = context.resources.displayMetrics.toDevicePixel(context.resources.getDimension(R.dimen.recommendation_empty_height))
             setMainImageDimensions(width/2, height/2)
             setMainImageScaleType(ImageView.ScaleType.FIT_CENTER)
             setMainImage(ContextCompat.getDrawable(context, R.drawable.transparent), false)
-
-            setOnClickListener {
-                context.startActivity(PlayConfirmationActivity.createIntent(context, program, false))
-            }
         }
 
         Observable.just(Unit)
                 .mergeWith(Reservation.instance.onChangeAsObservable.map { Unit })
-                .switchMap { UpdateRecommendation(view.context).getCardImageFromProgramAsync(mappingTask, program).toObservable() }
+                .switchMap { UpdateRecommendation(view.context).getCardImageFromProgramAsync(item.mappingTask, item.program).toObservable() }
                 .observeOnUIThread()
                 .subscribe {
                     view.mainImageView.setImageBitmap(it)
                 }
                 .addTo(subscriptions)
+    }
+
+    public class Item(val program: TimetableProgram, val mappingTask: Single<Map<String, String>>) {
     }
 }

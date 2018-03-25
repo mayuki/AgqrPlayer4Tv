@@ -14,18 +14,18 @@ import org.misuzilla.agqrplayer4tv.model.preference.StreamingType
  */
 class StreamingSettingGuidedStepFragment : GuidedStepSupportFragment() {
     override fun onCreateGuidance(savedInstanceState: Bundle?): GuidanceStylist.Guidance {
-        return GuidanceStylist.Guidance(context.getString(R.string.guidedstep_streaming_title), context.getString(R.string.guidedstep_streaming_description_long), context.getString(R.string.guidedstep_settings_title), null)
+        return GuidanceStylist.Guidance(context!!.getString(R.string.guidedstep_streaming_title), context!!.getString(R.string.guidedstep_streaming_description_long), context!!.getString(R.string.guidedstep_settings_title), null)
     }
 
     override fun onCreateActions(actions: MutableList<GuidedAction>, savedInstanceState: Bundle?) {
         with (actions) {
-            addCheckAction(context, StreamingType.RTMP.value,
-                    context.getString(R.string.guidedstep_streaming_type_rtmp),
-                    context.getString(R.string.guidedstep_streaming_type_rtmp_description),
+            addCheckAction(context!!, StreamingType.RTMP.value,
+                    context!!.getString(R.string.guidedstep_streaming_type_rtmp),
+                    context!!.getString(R.string.guidedstep_streaming_type_rtmp_description),
                     ApplicationPreference.streamingType.get() == StreamingType.RTMP)
-            addCheckAction(context, StreamingType.HLS.value,
-                    context.getString(R.string.guidedstep_streaming_type_hls),
-                    context.getString(R.string.guidedstep_streaming_type_hls_description),
+            addCheckAction(context!!, StreamingType.HLS.value,
+                    context!!.getString(R.string.guidedstep_streaming_type_hls),
+                    context!!.getString(R.string.guidedstep_streaming_type_hls_description),
                     ApplicationPreference.streamingType.get() == StreamingType.HLS)
         }
     }
@@ -35,6 +35,6 @@ class StreamingSettingGuidedStepFragment : GuidedStepSupportFragment() {
         actions.forEach { it.isChecked = it == action }
         ApplicationPreference.streamingType.set(StreamingType.fromInt(action.id.toInt()))
 
-        fragmentManager.popBackStack()
+        fragmentManager!!.popBackStack()
     }
 }

@@ -21,7 +21,7 @@ import org.misuzilla.agqrplayer4tv.infrastracture.webview.AgWebViewClient
 import rx.Observable
 
 class PlaybackWebViewFragment : PlaybackPlayerFragmentBase() {
-    private val URL_WEB: String get () = context.getString(R.string.url_web)
+    private val URL_WEB: String get () = context!!.getString(R.string.url_web)
 
     override var isPlaying: ReadOnlyRxProperty<Boolean> = RxProperty(true)
 
@@ -29,9 +29,9 @@ class PlaybackWebViewFragment : PlaybackPlayerFragmentBase() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.playback_webview, container, false)
-        val webView = view!!.findViewById(R.id.web_view) as WebView
+        val webView = view!!.findViewById<WebView>(R.id.web_view)
 
         with (webView) {
             settings.userAgentString = USER_AGENT
@@ -44,10 +44,10 @@ class PlaybackWebViewFragment : PlaybackPlayerFragmentBase() {
             loadUrl(URL_WEB)
         }
 
-        val buttonReload = view.findViewById(R.id.button_reload) as Button
-        val buttonSetting = view.findViewById(R.id.button_settings) as Button
+        val buttonReload = view.findViewById<Button>(R.id.button_reload)
+        val buttonSetting = view.findViewById<Button>(R.id.button_settings)
         buttonReload.setOnClickListener { webView.reload() }
-        buttonSetting.setOnClickListener { startActivity(Intent(activity.applicationContext, SettingsActivity::class.java)) }
+        buttonSetting.setOnClickListener { startActivity(Intent(activity!!.applicationContext, SettingsActivity::class.java)) }
 
         return view
     }
