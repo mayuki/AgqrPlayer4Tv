@@ -2,14 +2,16 @@ package org.misuzilla.agqrplayer4tv.component.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v17.leanback.app.PlaybackOverlaySupportFragment
+import android.support.v17.leanback.app.PlaybackSupportFragment
 import android.support.v17.leanback.widget.*
 import android.support.v4.content.ContextCompat
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import org.misuzilla.agqrplayer4tv.R
 import org.misuzilla.agqrplayer4tv.component.activity.ErrorActivity
+import org.misuzilla.agqrplayer4tv.component.activity.PlayConfirmationActivity
 import org.misuzilla.agqrplayer4tv.infrastracture.extension.addTo
 import org.misuzilla.agqrplayer4tv.infrastracture.extension.observeOnUIThread
 import org.misuzilla.agqrplayer4tv.component.activity.SettingsActivity
@@ -25,10 +27,11 @@ import org.misuzilla.agqrplayer4tv.component.widget.SettingsCommandScheduleActio
 import org.misuzilla.agqrplayer4tv.component.widget.TypedArrayObjectAdapter
 import org.misuzilla.agqrplayer4tv.model.*
 import org.threeten.bp.LocalDateTime
+import rx.Single
 import rx.android.schedulers.AndroidSchedulers
 import rx.subscriptions.CompositeSubscription
 
-class AgqrPlaybackOverlayFragment : PlaybackOverlaySupportFragment() {
+class AgqrPlaybackOverlayFragment : PlaybackSupportFragment() {
     private val subscriptions = CompositeSubscription()
 
     private val playbackPlayer: PlaybackPlayerFragmentBase
@@ -45,15 +48,24 @@ class AgqrPlaybackOverlayFragment : PlaybackOverlaySupportFragment() {
     }
 
     private val secondaryActionsDefinition by lazy {
-        mapOf<Action, (Action) -> Unit>(Action(1, context.getString(R.string.guidedstep_settings_title)) to { x ->
+        mapOf<Action, (Action) -> Unit>(Action(1, context!!.getString(R.string.guidedstep_settings_title)) to { x ->
             playbackPlayer.stop()
-            startActivity(Intent(activity, SettingsActivity::class.java))
+            startActivity(SettingsActivity.createIntent(context!!, SettingsActivity.SettingsFragmentType.DEFAULT))
         })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         buildDetails()
+
+        setOnItemViewClickedListener { itemViewHolder, item, rowViewHolder, row ->
+            if (item is CommandAction) {
+                item.execute()
+            } else if (item is ProgramCardPresenter.Item) {
+                startActivity(PlayConfirmationActivity.createIntent(context!!, item.program, false))
+            }
+        }
     }
 
     override fun onDetach() {
@@ -77,37 +89,38 @@ class AgqrPlaybackOverlayFragment : PlaybackOverlaySupportFragment() {
         val programCards = TypedArrayObjectAdapter(ProgramCardPresenter())
 
         // Rowに対するPresenterの登録と実際に表示したいRowを登録する
-        val rowsAdapter = TypedArrayObjectAdapter<Row>(ClassPresenterSelector().apply {
+        val presenterSelector = ClassPresenterSelector().apply {
             // RowのPresenterたちを登録
             addClassPresenter(PlaybackControlsRow::class.java, AgqrPlaybackControlsRowPresenter(AgqrDetailsDescriptionPresenter()).apply {
                 setSecondaryActionsHidden(true)
-                backgroundColor = ContextCompat.getColor(context, R.color.accent_dark)
-                progressColor = ContextCompat.getColor(context, R.color.accent)
+                backgroundColor = ContextCompat.getColor(context!!, R.color.accent_dark)
+                progressColor = ContextCompat.getColor(context!!, R.color.accent)
                 setOnActionClickedListener {
                     val action = if (primaryActionsDefinition.containsKey(it)) primaryActionsDefinition[it] else secondaryActionsDefinition[it]
                     action?.let { x -> x(it) }
                 }
             })
             addClassPresenter(ListRow::class.java, ListRowPresenter())
-        }).apply {
+        }
+        val rowsAdapter = TypedArrayObjectAdapter<Row>(presenterSelector).apply {
             // 各Rowを追加する
             // 1. プレイバックコントロール
             add(playbackControlsRow)
             // 2. これからのプログラム
-            add(ListRow(HeaderItem(0, context.getString(R.string.playback_rows_upcoming_header)), programCards))
+            add(ListRow(HeaderItem(0, context!!.getString(R.string.playback_rows_upcoming_header)), programCards))
             // 3. 設定
-            add(ListRow(HeaderItem(1, context.getString(R.string.playback_rows_settings_header)), TypedArrayObjectAdapter<Action>(ClassPresenterSelector().apply {
+            add(ListRow(HeaderItem(1, context!!.getString(R.string.playback_rows_settings_header)), TypedArrayObjectAdapter<Action>(ClassPresenterSelector().apply {
                 addClassPresenter(CommandAction::class.java, CommandActionCardPresenter())
                 addClassPresenter(SettingsCommandScheduleAction::class.java, SettingsCommandScheduleActionCardPresenter())
             }).apply {
-                add(SettingsCommandScheduleAction(0, context.getString(R.string.playback_rows_settings_schedules_clear), context.getString(R.string.playback_rows_settings_schedules_clear_description), context.getDrawable(R.drawable.ic_timer_off_white), {
-                    startActivity(SettingsActivity.createIntent(context, SettingsActivity.SettingsFragmentType.CANCEL_ALL_SCHEDULES))
+                add(SettingsCommandScheduleAction(0, context!!.getString(R.string.playback_rows_settings_schedules_clear), context!!.getString(R.string.playback_rows_settings_schedules_clear_description), context!!.getDrawable(R.drawable.ic_timer_off_white), {
+                    startActivity(SettingsActivity.createIntent(context!!, SettingsActivity.SettingsFragmentType.CANCEL_ALL_SCHEDULES))
                 }))
-                add(CommandAction(1, context.getString(R.string.playback_rows_settings_settings), "", context.getDrawable(R.drawable.ic_settings_applications_white), {
-                    startActivity(SettingsActivity.createIntent(context, SettingsActivity.SettingsFragmentType.DEFAULT))
+                add(CommandAction(1, context!!.getString(R.string.playback_rows_settings_settings), "", context!!.getDrawable(R.drawable.ic_settings_applications_white), {
+                    startActivity(SettingsActivity.createIntent(context!!, SettingsActivity.SettingsFragmentType.DEFAULT))
                 }))
-                add(CommandAction(2, context.getString(R.string.playback_rows_settings_about), "", context.getDrawable(R.drawable.ic_info_outline_white), {
-                    startActivity(SettingsActivity.createIntent(context, SettingsActivity.SettingsFragmentType.ABOUT))
+                add(CommandAction(2, context!!.getString(R.string.playback_rows_settings_about), "", context!!.getDrawable(R.drawable.ic_info_outline_white), {
+                    startActivity(SettingsActivity.createIntent(context!!, SettingsActivity.SettingsFragmentType.ABOUT))
                 }))
             }))
         }
@@ -137,14 +150,14 @@ class AgqrPlaybackOverlayFragment : PlaybackOverlaySupportFragment() {
                 .subscribe {
                     playbackControlsRow.totalTime = (it.end.totalSeconds - it.start.totalSeconds) * 1000
 
-                    val mappingTask = UpdateRecommendation(context).getProgramImageMappingAsync()
+                    val mappingTask = UpdateRecommendation(context!!).getProgramImageMappingAsync()
 
-                    programCards.clear()
-                    Timetable(context)
+                    Timetable(context!!)
                         .getDatasetAsync()
                         .subscribe {
+                            programCards.clear()
                             val now = LogicalDateTime.now
-                            programCards.add(0, it.data[now.dayOfWeek]!!.filter { it.start > now.time }.map { Pair(mappingTask, it) })
+                            programCards.add(0, it.data[now.dayOfWeek]!!.filter { it.start > now.time }.map { ProgramCardPresenter.Item(it, mappingTask) })
                             rowsAdapter.notifyArrayItemRangeChanged(1, programCards.size())
                         }
 

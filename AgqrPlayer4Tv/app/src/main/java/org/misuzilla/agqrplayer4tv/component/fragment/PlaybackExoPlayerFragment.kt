@@ -45,7 +45,7 @@ class PlaybackExoPlayerFragment : PlaybackPlayerFragmentBase(), EventListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.playback_exoplayer, container, false)
 
-        exoPlayerView = view.findViewById(R.id.surface_view) as SimpleExoPlayerView
+        exoPlayerView = view.findViewById(R.id.surface_view)
 
         return view
     }

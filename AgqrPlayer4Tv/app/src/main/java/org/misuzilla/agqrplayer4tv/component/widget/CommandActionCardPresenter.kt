@@ -1,6 +1,8 @@
 package org.misuzilla.agqrplayer4tv.component.widget
 
 import android.support.v17.leanback.widget.ImageCardView
+import android.util.Log
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 
@@ -15,8 +17,6 @@ class CommandActionCardPresenter : TypedViewPresenter<ImageCardView, CommandActi
             titleText = item.label1
             mainImage = item.icon
             item.label2?.let { contentText = it }
-
-            setOnClickListener { item.execute() }
         }
     }
 
@@ -26,5 +26,4 @@ class CommandActionCardPresenter : TypedViewPresenter<ImageCardView, CommandActi
     override fun onCreateView(parent: ViewGroup): ImageCardView {
         return ImageCardView(parent.context)
     }
-
 }

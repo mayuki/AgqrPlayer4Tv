@@ -22,8 +22,6 @@ class SettingsCommandScheduleActionCardPresenter : TypedViewPresenter<ImageCardV
             titleText = item.label1
             mainImage = item.icon
             item.label2?.let { contentText = it }
-
-            setOnClickListener { item.execute() }
         }
 
         Observable.just(Reservation.instance)

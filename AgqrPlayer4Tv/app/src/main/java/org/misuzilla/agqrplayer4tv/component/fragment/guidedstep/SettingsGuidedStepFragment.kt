@@ -15,15 +15,15 @@ import java.util.*
 
 class SettingsGuidedStepFragment : GuidedStepSupportFragment() {
     override fun onCreateGuidance(savedInstanceState: Bundle?): GuidanceStylist.Guidance {
-        return GuidanceStylist.Guidance(context.getString(R.string.guidedstep_settings_title), context.getString(R.string.guidedstep_settings_description), context.getString(R.string.app_name), null)
+        return GuidanceStylist.Guidance(context!!.getString(R.string.guidedstep_settings_title), context!!.getString(R.string.guidedstep_settings_description), context!!.getString(R.string.app_name), null)
     }
 
 
     override fun onCreateActions(actions: MutableList<GuidedAction>, savedInstanceState: Bundle?) {
         with (actions) {
-            addAction(context, 0, context.getString(R.string.guidedstep_streaming_title), context.getString(R.string.guidedstep_streaming_description))
-            addAction(context, 1, context.getString(R.string.guidedstep_player_title), context.getString(R.string.guidedstep_player_description))
-            addAction(context, 2, context.getString(R.string.guidedstep_about_app_title), context.getString(R.string.guidedstep_about_app_description))
+            addAction(context!!, 0, context!!.getString(R.string.guidedstep_streaming_title), context!!.getString(R.string.guidedstep_streaming_description))
+            addAction(context!!, 1, context!!.getString(R.string.guidedstep_player_title), context!!.getString(R.string.guidedstep_player_description))
+            addAction(context!!, 2, context!!.getString(R.string.guidedstep_about_app_title), context!!.getString(R.string.guidedstep_about_app_description))
         }
     }
 
