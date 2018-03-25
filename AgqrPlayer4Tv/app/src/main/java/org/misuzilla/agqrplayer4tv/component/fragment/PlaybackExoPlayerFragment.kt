@@ -14,9 +14,11 @@ import com.google.android.exoplayer2.ExoPlayer.EventListener
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.extractor.flv.FlvExtractor
 import com.google.android.exoplayer2.source.ExtractorMediaSource
+import com.google.android.exoplayer2.source.TrackGroupArray
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
-import com.google.android.exoplayer2.trackselection.AdaptiveVideoTrackSelection
+import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
 import com.google.android.exoplayer2.upstream.DefaultDataSource
@@ -29,7 +31,6 @@ import org.misuzilla.agqrplayer4tv.model.preference.StreamingType
 import rx.subjects.BehaviorSubject
 
 class PlaybackExoPlayerFragment : PlaybackPlayerFragmentBase(), EventListener {
-
     override var isPlaying: ReadOnlyRxProperty<Boolean> = RxProperty(false)
     private var exoPlayerView: SimpleExoPlayerView? = null
     private val stateChanged = BehaviorSubject.create(Unit)
@@ -51,7 +52,7 @@ class PlaybackExoPlayerFragment : PlaybackPlayerFragmentBase(), EventListener {
     }
 
     override fun play() {
-        val trackSelector = DefaultTrackSelector(Handler(), AdaptiveVideoTrackSelection.Factory(DefaultBandwidthMeter()))
+        val trackSelector = DefaultTrackSelector(AdaptiveTrackSelection.Factory(DefaultBandwidthMeter()))
         val loadControl = DefaultLoadControl()
         val exoPlayer = ExoPlayerFactory.newSimpleInstance(this.context, trackSelector, loadControl)
         val mediaSource = when (ApplicationPreference.streamingType.get()) {
@@ -87,13 +88,28 @@ class PlaybackExoPlayerFragment : PlaybackPlayerFragmentBase(), EventListener {
     override fun onLoadingChanged(isLoading: Boolean) {
     }
 
-    override fun onPositionDiscontinuity() {
-    }
-
-    override fun onTimelineChanged(timeline: Timeline?, manifest: Any?) {
-    }
-
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
         stateChanged.onNext(Unit)
+    }
+
+    override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters?) {
+    }
+
+    override fun onSeekProcessed() {
+    }
+
+    override fun onTracksChanged(trackGroups: TrackGroupArray?, trackSelections: TrackSelectionArray?) {
+    }
+
+    override fun onPositionDiscontinuity(reason: Int) {
+    }
+
+    override fun onRepeatModeChanged(repeatMode: Int) {
+    }
+
+    override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {
+    }
+
+    override fun onTimelineChanged(timeline: Timeline?, manifest: Any?, reason: Int) {
     }
 }

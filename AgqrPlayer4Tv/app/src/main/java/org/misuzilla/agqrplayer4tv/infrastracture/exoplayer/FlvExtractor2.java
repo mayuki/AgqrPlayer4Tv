@@ -15,6 +15,7 @@
  */
 package org.misuzilla.agqrplayer4tv.infrastracture.exoplayer;
 
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.extractor.Extractor;
 import com.google.android.exoplayer2.extractor.ExtractorInput;
 import com.google.android.exoplayer2.extractor.ExtractorOutput;
@@ -126,7 +127,7 @@ public final class FlvExtractor2 implements Extractor, SeekMap {
     }
 
     @Override
-    public void seek(long position) {
+    public void seek(long position, long timeUs) {
         parserState = STATE_READING_FLV_HEADER;
         bytesToNextTagHeader = 0;
     }
@@ -183,10 +184,10 @@ public final class FlvExtractor2 implements Extractor, SeekMap {
         boolean hasAudio = (flags & 0x04) != 0;
         boolean hasVideo = (flags & 0x01) != 0;
         if (hasAudio && audioReader == null) {
-            audioReader = new AudioTagPayloadReader2(extractorOutput.track(TAG_TYPE_AUDIO));
+            audioReader = new AudioTagPayloadReader2(extractorOutput.track(TAG_TYPE_AUDIO, C.TRACK_TYPE_AUDIO));
         }
         if (hasVideo && videoReader == null) {
-            videoReader = new VideoTagPayloadReader2(extractorOutput.track(TAG_TYPE_VIDEO));
+            videoReader = new VideoTagPayloadReader2(extractorOutput.track(TAG_TYPE_VIDEO, C.TRACK_TYPE_VIDEO));
         }
         if (metadataReader == null) {
             metadataReader = new ScriptTagPayloadReader2(null);
@@ -287,8 +288,8 @@ public final class FlvExtractor2 implements Extractor, SeekMap {
     }
 
     @Override
-    public long getPosition(long timeUs) {
-        return 0;
+    public SeekPoints getSeekPoints(long timeUs) {
+        return null;
     }
 
 }
