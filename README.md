@@ -6,11 +6,11 @@
 Android TVで超A&amp;G+を再生します。
 
 ## 使い方
-1. apk を何とかしてインストールします(ESファイルエクスプローラーとか。apkは[releases](https://github.com/mayuki/AgqrPlayer4Tv/releases)にあります)
+1. [Google Playからインストールします](https://play.google.com/store/apps/details?id=org.misuzilla.agqrplayer4tv&hl=ja)
 2. ホームから起動します
 3. 何かリモコンのボタンを押します
 4. 声優さんの声が聞こえてきます
 
 ## 動作確認
-- Android TV Emulator (5.0.1)
-- Sony BRAVIA X8500C (5.0.1, Sony 4K 2015 Model)
+- Sony BRAVIA X8500C (Android 7.0, Sony 4K 2015 Model)
+- Nexus Player (Android 8.0)
