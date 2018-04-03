@@ -11,6 +11,7 @@ import android.text.Layout
 import android.text.StaticLayout
 import android.text.TextPaint
 import android.util.Log
+import com.microsoft.appcenter.analytics.Analytics
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Transformation
 import org.misuzilla.agqrplayer4tv.R
@@ -31,18 +32,21 @@ class UpdateRecommendation(private val context: Context) {
         val imageMappingUrl = context.resources.getString(R.string.url_image_mapping)
         val client = OkHttpClientHelper.create(context)
         return client.get(imageMappingUrl).enqueueAndToSingle()
+                .map { it.body().string() }
+                .onErrorResumeNext {
+                    Analytics.trackEvent("Exception", mapOf("caller" to "UpdateRecommendation.getProgramImageMappingAsync", "name" to it.javaClass.name, "message" to it.message.toString()))
+                    Single.just("")
+                }
                 .map {
                     // カンマ区切りファイルを雑にパースする
-                    it.body()
-                            .string()
-                            .split('\n')
-                            .map { it.trim() }
-                            .filter { !it.startsWith("#") }
-                            .filter { !it.isNullOrBlank() }
-                            .map { it.split(',') }
-                            .filter { it.size >= 3 }
-                            .flatMap { listOf(Pair(it[0], it[2]), Pair(if (it[1].isNullOrBlank()) it[0] + "-EmailAddress" else it[1], it[2])) } // メールアドレスがないとき用に適当に返す
-                            .toMap()
+                    it.split('\n')
+                        .map { it.trim() }
+                        .filter { !it.startsWith("#") }
+                        .filter { !it.isNullOrBlank() }
+                        .map { it.split(',') }
+                        .filter { it.size >= 3 }
+                        .flatMap { listOf(Pair(it[0], it[2]), Pair(if (it[1].isNullOrBlank()) it[0] + "-EmailAddress" else it[1], it[2])) } // メールアドレスがないとき用に適当に返す
+                        .toMap()
                 }
                 .cache()
     }
