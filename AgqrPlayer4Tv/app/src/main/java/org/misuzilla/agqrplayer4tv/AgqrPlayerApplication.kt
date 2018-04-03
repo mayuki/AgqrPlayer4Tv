@@ -18,6 +18,10 @@ class AgqrPlayerApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        // WORKAROUND
+        java.lang.System.setProperty("java.net.preferIPv4Stack", "true")
+        java.lang.System.setProperty("java.net.preferIPv6Addresses", "false")
+
         AppCenter.start(this, "ffc14c3d-6ca4-4a90-b3e3-ee8e8416183f", Analytics::class.java, Crashes::class.java)
 
         ApplicationPreference.initialize(this)
