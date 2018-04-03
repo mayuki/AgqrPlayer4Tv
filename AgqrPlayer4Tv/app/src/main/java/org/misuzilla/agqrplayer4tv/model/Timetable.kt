@@ -5,6 +5,7 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
+import com.microsoft.appcenter.analytics.Analytics
 import org.misuzilla.agqrplayer4tv.R
 import org.misuzilla.agqrplayer4tv.infrastracture.extension.enqueueAndToSingle
 import org.misuzilla.agqrplayer4tv.infrastracture.extension.observeOnUIThread
@@ -27,6 +28,10 @@ class Timetable(private val context: Context) {
         if (cachedTimetableStoredDataset.isExpired) {
             return fetchAndParseAsync()
                     .doOnSuccess { cachedTimetableStoredDataset = it }
+                    .onErrorResumeNext {
+                        Analytics.trackEvent("Exception", mapOf("caller" to "Timetable.getDataAsync", "name" to it.javaClass.name, "message" to it.message.toString()))
+                        Single.just(cachedTimetableStoredDataset)
+                    }
         } else {
             return Observable.just(cachedTimetableStoredDataset).toSingle()
         }
