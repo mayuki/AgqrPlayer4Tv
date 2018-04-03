@@ -6,11 +6,14 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.VectorDrawable
 import android.support.v17.leanback.widget.ImageCardView
 import android.support.v17.leanback.widget.ItemAlignmentFacet
+import android.support.v17.leanback.widget.Presenter
 import android.support.v4.content.ContextCompat
 import android.text.Layout
 import android.text.StaticLayout
 import android.text.TextPaint
+import android.util.Log
 import android.view.Gravity
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import org.misuzilla.agqrplayer4tv.R
@@ -30,18 +33,20 @@ import rx.subscriptions.CompositeSubscription
  * これからの番組一覧のカードを表示するためのPresenterクラスです。
  */
 class ProgramCardPresenter : TypedViewPresenter<ImageCardView, ProgramCardPresenter.Item>() {
-    private val subscriptions = CompositeSubscription()
 
     override fun onUnbindViewHolder(viewHolder: ViewHolder, view: ImageCardView) {
-        subscriptions.clear()
+        (viewHolder as ProgramCardPresenterViewHolder).subscriptions.clear()
     }
 
     override fun onCreateView(parent: ViewGroup): ImageCardView {
         return ImageCardView(parent.context)
     }
 
-    override fun onBindViewHolderWithItem(viewHolder: ViewHolder, view: ImageCardView, item: Item) {
+    override fun onCreateViewHolder(parent: ViewGroup): ViewHolder {
+        return ProgramCardPresenterViewHolder(onCreateView(parent))
+    }
 
+    override fun onBindViewHolderWithItem(viewHolder: ViewHolder, view: ImageCardView, item: Item) {
         view.apply {
             titleText = item.program.title
             contentText = "${item.program.start.toShortString()}～"
@@ -59,9 +64,14 @@ class ProgramCardPresenter : TypedViewPresenter<ImageCardView, ProgramCardPresen
                 .subscribe {
                     view.mainImageView.setImageBitmap(it)
                 }
-                .addTo(subscriptions)
+                .addTo((viewHolder as ProgramCardPresenterViewHolder).subscriptions)
     }
 
     public class Item(val program: TimetableProgram, val mappingTask: Single<Map<String, String>>) {
+    }
+
+    public class ProgramCardPresenterViewHolder(view: View) : Presenter.ViewHolder(view) {
+        val subscriptions = CompositeSubscription()
+
     }
 }
