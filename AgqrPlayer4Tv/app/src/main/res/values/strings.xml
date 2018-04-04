@@ -58,7 +58,7 @@
     <string name="guidedstep_about_app_title">AgqrPlayer for Android TVについて</string>
     <string name="guidedstep_about_app_description">アプリケーションについての情報を表示します</string>
     <string name="guidedstep_about_app_version">バージョン情報</string>
-    <string name="guidedstep_about_app_build">ビルド時刻</string>
+    <string name="guidedstep_about_app_build">ビルド</string>
     <string name="guidedstep_about_app_android">Android OS</string>
     <string name="guidedstep_about_app_device">デバイス</string>
 

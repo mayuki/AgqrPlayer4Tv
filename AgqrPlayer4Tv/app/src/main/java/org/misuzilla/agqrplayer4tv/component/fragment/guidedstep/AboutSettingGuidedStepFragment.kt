@@ -31,7 +31,7 @@ class AboutSettingGuidedStepFragment : GuidedStepSupportFragment() {
                     "${packageInfo.versionName} (VersionCode ${packageInfo.versionCode})"
                 }
             )
-            addInfo(context!!, ++index, context!!.getString(R.string.guidedstep_about_app_build), "${SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(Date(packageInfo.lastUpdateTime))}")
+            addInfo(context!!, ++index, context!!.getString(R.string.guidedstep_about_app_build), "${BuildConfig.BUILD_BUILDNUMBER}; ${BuildConfig.BUILD_SOURCEVERSION} (${BuildConfig.BUILD_SOURCEBRANCHNAME})")
             addInfo(context!!, ++index, context!!.getString(R.string.guidedstep_about_app_device), "${Build.MANUFACTURER} ${Build.MODEL}")
             addInfo(context!!, ++index, context!!.getString(R.string.guidedstep_about_app_android), "${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})")
         }

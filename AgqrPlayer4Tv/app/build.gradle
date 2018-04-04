@@ -7,8 +7,12 @@ android {
         applicationId "org.misuzilla.agqrplayer4tv"
         minSdkVersion 22
         targetSdkVersion 27
-        versionCode 8
+        versionCode 9
         versionName "2.5.0.1"
+
+        buildConfigField "String", "BUILD_SOURCEBRANCHNAME", "\"${System.getenv("BUILD_SOURCEBRANCHNAME")}\""
+        buildConfigField "String", "BUILD_SOURCEVERSION", "\"${System.getenv("BUILD_SOURCEVERSION")}\""
+        buildConfigField "String", "BUILD_BUILDNUMBER", "\"${System.getenv("BUILD_BUILDNUMBER")}\""
     }
     buildTypes {
         debug {
