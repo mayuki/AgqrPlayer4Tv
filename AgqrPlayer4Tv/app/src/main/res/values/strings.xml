@@ -4,7 +4,7 @@
     <string name="url_timetable">http://www.agqr.jp/timetable/streaming.html</string>
     <string name="url_image_mapping">https://raw.githubusercontent.com/mayuki/AgqrPlayer4Tv/master/Extra/AgqrProgramImageMapping.csv</string>
     <string name="url_json_timetable">https://agqrplayer4tv.blob.core.windows.net/data/timetable.json</string>
-    <string name="url_hls">http://ic-www.uniqueradio.jp/hls/m3u8.php</string>
+    <string name="url_hls">https://www.uniqueradio.jp/agplayerf/hls/HLS_Layer1-cdn.m3u8</string>
     <string name="url_rtmp">rtmp://fms-base2.mitene.ad.jp:1935/agqr/aandg1 live=1</string>
     <string name="url_web">http://www.uniqueradio.jp/agplayerf/newplayerf2-sp.php</string>
     <string name="user_agent">Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.23 Mobile Safari/537.36</string>
