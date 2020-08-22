@@ -1,7 +1,7 @@
 package org.misuzilla.agqrplayer4tv.infrastracture.extension
 
 import android.content.Context
-import android.support.v17.leanback.widget.GuidedAction
+import androidx.leanback.widget.GuidedAction
 import java.util.*
 
 /**

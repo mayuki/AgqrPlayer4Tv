@@ -4,9 +4,9 @@ import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.VectorDrawable
-import android.support.v17.leanback.widget.ImageCardView
-import android.support.v17.leanback.widget.ItemAlignmentFacet
-import android.support.v17.leanback.widget.Presenter
+import androidx.leanback.widget.ImageCardView
+import androidx.leanback.widget.ItemAlignmentFacet
+import androidx.leanback.widget.Presenter
 import android.support.v4.content.ContextCompat
 import android.text.Layout
 import android.text.StaticLayout

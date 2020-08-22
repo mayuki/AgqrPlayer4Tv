@@ -1,7 +1,7 @@
 package org.misuzilla.agqrplayer4tv.component.fragment.presenter
 
-import android.support.v17.leanback.widget.AbstractDetailsDescriptionPresenter
-import android.support.v17.leanback.widget.Presenter
+import androidx.leanback.widget.AbstractDetailsDescriptionPresenter
+import androidx.leanback.widget.Presenter
 import org.misuzilla.agqrplayer4tv.infrastracture.extension.addTo
 import org.misuzilla.agqrplayer4tv.infrastracture.extension.observeOnUIThread
 import org.misuzilla.agqrplayer4tv.component.fragment.PlaybackControlsRowViewModel

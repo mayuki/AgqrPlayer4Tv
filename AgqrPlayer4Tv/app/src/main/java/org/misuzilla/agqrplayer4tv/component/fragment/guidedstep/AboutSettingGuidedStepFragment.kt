@@ -3,9 +3,9 @@ package org.misuzilla.agqrplayer4tv.component.fragment.guidedstep
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.support.v17.leanback.app.GuidedStepSupportFragment
-import android.support.v17.leanback.widget.GuidanceStylist
-import android.support.v17.leanback.widget.GuidedAction
+import androidx.leanback.app.GuidedStepSupportFragment
+import androidx.leanback.widget.GuidanceStylist
+import androidx.leanback.widget.GuidedAction
 import org.misuzilla.agqrplayer4tv.BuildConfig
 import org.misuzilla.agqrplayer4tv.R
 import org.misuzilla.agqrplayer4tv.infrastracture.extension.addInfo

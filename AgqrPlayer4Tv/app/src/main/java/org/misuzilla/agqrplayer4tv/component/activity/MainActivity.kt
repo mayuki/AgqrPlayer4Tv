@@ -1,8 +1,7 @@
 package org.misuzilla.agqrplayer4tv.component.activity
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
+import androidx.fragment.app.FragmentActivity
 import android.util.Log
 import android.view.KeyEvent
 import android.view.WindowManager

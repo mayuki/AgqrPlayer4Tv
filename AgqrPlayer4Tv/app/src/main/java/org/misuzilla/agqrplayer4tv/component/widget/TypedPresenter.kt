@@ -1,6 +1,6 @@
 package org.misuzilla.agqrplayer4tv.component.widget
 
-import android.support.v17.leanback.widget.Presenter
+import androidx.leanback.widget.Presenter
 
 /**
  * 表示すべき値の型を指定したPresenterクラスです。

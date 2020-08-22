@@ -2,7 +2,7 @@ package org.misuzilla.agqrplayer4tv.component.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v17.leanback.app.ErrorSupportFragment
+import androidx.leanback.app.ErrorSupportFragment
 import org.misuzilla.agqrplayer4tv.R
 import org.misuzilla.agqrplayer4tv.component.activity.SettingsActivity
 

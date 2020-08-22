@@ -4,6 +4,7 @@ import android.net.Uri
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DataSpec
+import com.google.android.exoplayer2.upstream.TransferListener
 import net.butterflytv.rtmp_client.RtmpClient
 
 /**
@@ -26,6 +27,9 @@ class RtmpDataSource : DataSource {
 
     override fun close() {
         rtmpClient.close()
+    }
+
+    override fun addTransferListener(transferListener: TransferListener?) {
     }
 
     override fun read(buffer: ByteArray?, offset: Int, readLength: Int): Int {

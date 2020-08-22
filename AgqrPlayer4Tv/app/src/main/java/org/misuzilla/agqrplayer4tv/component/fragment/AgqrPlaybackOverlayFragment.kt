@@ -2,9 +2,8 @@ package org.misuzilla.agqrplayer4tv.component.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v17.leanback.app.PlaybackSupportFragment
-import android.support.v17.leanback.widget.*
-import android.support.v4.content.ContextCompat
+import androidx.leanback.app.PlaybackSupportFragment
+import androidx.leanback.widget.*
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -93,8 +92,8 @@ class AgqrPlaybackOverlayFragment : PlaybackSupportFragment() {
             // RowのPresenterたちを登録
             addClassPresenter(PlaybackControlsRow::class.java, AgqrPlaybackControlsRowPresenter(AgqrDetailsDescriptionPresenter()).apply {
                 setSecondaryActionsHidden(true)
-                backgroundColor = ContextCompat.getColor(context!!, R.color.accent_dark)
-                progressColor = ContextCompat.getColor(context!!, R.color.accent)
+                backgroundColor = context!!.getColor(R.color.accent_dark)
+                progressColor = context!!.getColor(R.color.accent)
                 setOnActionClickedListener {
                     val action = if (primaryActionsDefinition.containsKey(it)) primaryActionsDefinition[it] else secondaryActionsDefinition[it]
                     action?.let { x -> x(it) }

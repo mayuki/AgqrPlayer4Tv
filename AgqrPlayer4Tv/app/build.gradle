@@ -1,12 +1,13 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 29
     defaultConfig {
         applicationId "org.misuzilla.agqrplayer4tv"
-        minSdkVersion 22
-        targetSdkVersion 27
+        minSdkVersion 24
+        targetSdkVersion 29
         versionCode 9
         versionName "2.5.0.1"
 
@@ -40,6 +41,11 @@ android {
     lintOptions {
         abortOnError false
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -47,23 +53,19 @@ dependencies {
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.3.1'
 
     // Support Libraries
-    def supportLibraryVersion = '27.1.0'
-    implementation "com.android.support:leanback-v17:${supportLibraryVersion}"
-    implementation "com.android.support:preference-leanback-v17:${supportLibraryVersion}"
-    implementation "com.android.support:appcompat-v7:${supportLibraryVersion}"
-    implementation "com.android.support:support-fragment:${supportLibraryVersion}"
-    implementation "com.android.support:recommendation:${supportLibraryVersion}"
-    implementation "com.android.support:support-v4:${supportLibraryVersion}"
+    implementation 'androidx.leanback:leanback:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
 
     // Glide
-    def glideVersion = "4.5.0"
+    def glideVersion = "4.11.0"
     implementation "com.github.bumptech.glide:glide:${glideVersion}"
 
     // RtmpClient/ExoPlayer
     implementation 'net.butterflytv.utils:rtmp-client:3.0.1'
-    implementation 'com.google.android.exoplayer:exoplayer:2.7.1'
+    implementation 'com.google.android.exoplayer:exoplayer:2.11.7'
 
     // Picasso/OkHttp
     implementation 'com.squareup.okhttp3:okhttp:3.5.0'
@@ -76,14 +78,13 @@ dependencies {
     implementation 'com.jakewharton.threetenabp:threetenabp:1.0.4'
 
     // Rx & RxProperty
-    implementation 'io.reactivex:rxjava:1.1.6'
-    implementation 'io.reactivex:rxandroid:1.2.1'
-    implementation 'com.github.k-kagurazaka.rx-property-android:rx-property:2.0.0'
-    implementation 'com.github.k-kagurazaka.rx-property-android:rx-property-kotlin:2.0.0'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.19'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'com.github.k-kagurazaka.rx-property-android:rx-property:4.0.0'
+    implementation 'com.github.k-kagurazaka.rx-property-android:rx-property-kotlin:4.0.0'
 
     // Visual Studio App Center
-    def appCenterSdkVersion = '1.2.0'
-    implementation 'com.android.support:support-v4:27.+'
+    def appCenterSdkVersion = '3.3.0'
     implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
     implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
 }

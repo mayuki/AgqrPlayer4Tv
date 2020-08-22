@@ -10,9 +10,7 @@ import org.misuzilla.agqrplayer4tv.R
 import org.misuzilla.agqrplayer4tv.infrastracture.exoplayer.FlvExtractor2
 import org.misuzilla.agqrplayer4tv.infrastracture.exoplayer.RtmpDataSource
 import com.google.android.exoplayer2.*
-import com.google.android.exoplayer2.ExoPlayer.EventListener
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
-import com.google.android.exoplayer2.extractor.flv.FlvExtractor
+import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.source.TrackGroupArray
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
@@ -21,7 +19,6 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
-import com.google.android.exoplayer2.upstream.DefaultDataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import jp.keita.kagurazaka.rxproperty.ReadOnlyRxProperty
 import jp.keita.kagurazaka.rxproperty.RxProperty
@@ -30,7 +27,7 @@ import org.misuzilla.agqrplayer4tv.model.preference.ApplicationPreference
 import org.misuzilla.agqrplayer4tv.model.preference.StreamingType
 import rx.subjects.BehaviorSubject
 
-class PlaybackExoPlayerFragment : PlaybackPlayerFragmentBase(), EventListener {
+class PlaybackExoPlayerFragment : PlaybackPlayerFragmentBase(), Player.EventListener {
     override var isPlaying: ReadOnlyRxProperty<Boolean> = RxProperty(false)
     private var exoPlayerView: SimpleExoPlayerView? = null
     private val stateChanged = BehaviorSubject.create(Unit)
@@ -54,9 +51,9 @@ class PlaybackExoPlayerFragment : PlaybackPlayerFragmentBase(), EventListener {
     override fun play() {
         val trackSelector = DefaultTrackSelector(AdaptiveTrackSelection.Factory(DefaultBandwidthMeter()))
         val loadControl = DefaultLoadControl()
-        val exoPlayer = ExoPlayerFactory.newSimpleInstance(this.context, trackSelector, loadControl)
+        val exoPlayer = ExoPlayerFactory.newSimpleInstance(this.context!!, trackSelector, loadControl)
         val mediaSource = when (ApplicationPreference.streamingType.get()) {
-            StreamingType.HLS -> HlsMediaSource(Uri.parse(URL_HLS), DefaultDataSourceFactory(this.context, USER_AGENT), null, null)
+            StreamingType.HLS -> HlsMediaSource.Factory(DefaultDataSourceFactory(this.context, USER_AGENT)).createMediaSource(Uri.parse(URL_HLS))
             StreamingType.RTMP -> ExtractorMediaSource(Uri.parse(URL_RTMP), { RtmpDataSource() }, { arrayOf(FlvExtractor2()) }, null, null)
         }
 
@@ -81,7 +78,7 @@ class PlaybackExoPlayerFragment : PlaybackPlayerFragmentBase(), EventListener {
     }
 
     // ExoPlayer.EventListener
-    override fun onPlayerError(error: ExoPlaybackException?) {
+    override fun onPlayerError(error: ExoPlaybackException) {
         this.reportError()
     }
 
@@ -92,13 +89,13 @@ class PlaybackExoPlayerFragment : PlaybackPlayerFragmentBase(), EventListener {
         stateChanged.onNext(Unit)
     }
 
-    override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters?) {
+    override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters) {
     }
 
     override fun onSeekProcessed() {
     }
 
-    override fun onTracksChanged(trackGroups: TrackGroupArray?, trackSelections: TrackSelectionArray?) {
+    override fun onTracksChanged(trackGroups: TrackGroupArray, trackSelections: TrackSelectionArray) {
     }
 
     override fun onPositionDiscontinuity(reason: Int) {
@@ -110,6 +107,6 @@ class PlaybackExoPlayerFragment : PlaybackPlayerFragmentBase(), EventListener {
     override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {
     }
 
-    override fun onTimelineChanged(timeline: Timeline?, manifest: Any?, reason: Int) {
+    override fun onTimelineChanged(timeline: Timeline, reason: Int) {
     }
 }

@@ -1,8 +1,8 @@
 package org.misuzilla.agqrplayer4tv.component.widget
 
-import android.support.v17.leanback.widget.ArrayObjectAdapter
-import android.support.v17.leanback.widget.ObjectAdapter
-import android.support.v17.leanback.widget.PresenterSelector
+import androidx.leanback.widget.ArrayObjectAdapter
+import androidx.leanback.widget.ObjectAdapter
+import androidx.leanback.widget.PresenterSelector
 
 /**
  * 型を指定したArrayObjectAdapterクラスです。

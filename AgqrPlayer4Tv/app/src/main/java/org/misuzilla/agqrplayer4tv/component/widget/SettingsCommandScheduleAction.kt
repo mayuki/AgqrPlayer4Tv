@@ -1,7 +1,7 @@
 package org.misuzilla.agqrplayer4tv.component.widget
 
 import android.graphics.drawable.Drawable
-import android.support.v17.leanback.widget.Action
+import androidx.leanback.widget.Action
 
 /**
  * Created by Tomoyo on 1/16/2017.

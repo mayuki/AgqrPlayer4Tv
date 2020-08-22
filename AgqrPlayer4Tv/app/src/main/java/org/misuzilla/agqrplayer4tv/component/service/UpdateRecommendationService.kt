@@ -18,7 +18,7 @@ class UpdateRecommendationService : IntentService("UpdateRecommendationService")
         applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     }
 
-    override fun onHandleIntent(intent: Intent) {
+    override fun onHandleIntent(intent: Intent?) {
         try {
             updateNotificationsAsync().await()
         } catch (ex: Exception) {

@@ -9,7 +9,7 @@ import org.misuzilla.agqrplayer4tv.component.service.UpdateRecommendationService
 
 class BootupBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        if (intent.action.endsWith(Intent.ACTION_BOOT_COMPLETED)) {
+        if (intent.action?.endsWith(Intent.ACTION_BOOT_COMPLETED) ?: false) {
             scheduleRecommendationUpdate(context)
         }
     }

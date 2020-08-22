@@ -4,8 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
-import android.support.v17.leanback.app.GuidedStepSupportFragment
-import android.support.v4.app.FragmentActivity
+import androidx.leanback.app.GuidedStepSupportFragment
+import androidx.fragment.app.FragmentActivity
 import org.misuzilla.agqrplayer4tv.R
 import org.misuzilla.agqrplayer4tv.component.fragment.guidedstep.PlayConfirmationGuidedStepFragment
 import org.misuzilla.agqrplayer4tv.model.TimetableProgram

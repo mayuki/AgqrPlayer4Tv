@@ -1,6 +1,6 @@
 package org.misuzilla.agqrplayer4tv.component.widget
 
-import android.support.v17.leanback.widget.ImageCardView
+import androidx.leanback.widget.ImageCardView
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup

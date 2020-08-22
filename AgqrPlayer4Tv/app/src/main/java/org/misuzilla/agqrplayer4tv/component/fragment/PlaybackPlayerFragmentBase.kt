@@ -1,7 +1,7 @@
 package org.misuzilla.agqrplayer4tv.component.fragment
 
 import android.content.Intent
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.util.Log
 import org.misuzilla.agqrplayer4tv.R
 import org.misuzilla.agqrplayer4tv.component.activity.ErrorActivity

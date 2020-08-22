@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.*
 import android.graphics.drawable.VectorDrawable
-import android.support.v4.content.ContextCompat
 import android.text.Layout
 import android.text.StaticLayout
 import android.text.TextPaint
@@ -93,7 +92,7 @@ class UpdateRecommendation(private val context: Context) {
 
                         canvas.drawBitmap(bitmap, (width - bitmap.width) / 2f, (height - bitmap.height) / 2f, Paint())
 
-                        (ContextCompat.getDrawable(context, R.drawable.ic_timer_white) as VectorDrawable).let {
+                        (context.getDrawable(R.drawable.ic_timer_white) as VectorDrawable).let {
                             it.bounds = Rect(16, 16, 128 + 16, 128 + 16)
 
                             canvas.drawPath(
@@ -104,7 +103,7 @@ class UpdateRecommendation(private val context: Context) {
                                         close()
                                     },
                                     Paint().apply {
-                                        color = ContextCompat.getColor(context, R.color.accent_dark)
+                                        color = context!!.getColor(R.color.accent_dark)
                                         style = Paint.Style.FILL
                                     }
                             )
@@ -120,8 +119,8 @@ class UpdateRecommendation(private val context: Context) {
     }
 
     private fun createNotificationImageFromText(program: TimetableProgram): Bitmap {
-        val colorAccent = ContextCompat.getColor(context, R.color.accent)
-        val colorAccentDark = ContextCompat.getColor(context, R.color.accent_dark)
+        val colorAccent = context!!.getColor(R.color.accent)
+        val colorAccentDark = context!!.getColor(R.color.accent_dark)
         val width = context.resources.displayMetrics.toDevicePixel(context.resources.getDimension(R.dimen.recommendation_empty_width))
         val height = context.resources.displayMetrics.toDevicePixel(context.resources.getDimension(R.dimen.recommendation_empty_height))
         val textSizeRec = context.resources.displayMetrics.toDevicePixel(context.resources.getDimension(R.dimen.recommendation_text_size))
@@ -167,7 +166,7 @@ class UpdateRecommendation(private val context: Context) {
          * 通知用のオブジェクトを生成します。
          */
         fun createNotification(context: Context): Notification {
-            val colorAccentDark = ContextCompat.getColor(context, R.color.accent_dark)
+            val colorAccentDark = context!!.getColor(R.color.accent_dark)
 
             val isNowPlaying = program.isPlaying
 
