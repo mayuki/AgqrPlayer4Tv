@@ -20,11 +20,11 @@ class PlaybackDefaultVideoViewFragment : PlaybackPlayerFragmentBase() {
         videoView.apply {
             setOnCompletionListener { updateStatus()  }
             setOnPreparedListener { updateStatus() }
-            setOnInfoListener { mediaPlayer, i1, i2 ->
+            setOnInfoListener { _, _, _ ->
                 updateStatus()
                 false
             }
-            setOnErrorListener{ mediaPlayer, i1, i2 ->
+            setOnErrorListener{ _, _, _ ->
                 updateStatus()
                 reportError()
                 true

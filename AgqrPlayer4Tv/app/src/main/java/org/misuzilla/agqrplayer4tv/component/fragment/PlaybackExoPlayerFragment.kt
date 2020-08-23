@@ -10,20 +10,19 @@ import org.misuzilla.agqrplayer4tv.infrastracture.exoplayer.FlvExtractor2
 import org.misuzilla.agqrplayer4tv.infrastracture.exoplayer.RtmpDataSource
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.source.ExtractorMediaSource
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.TrackGroupArray
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
+import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import org.misuzilla.agqrplayer4tv.model.preference.ApplicationPreference
 import org.misuzilla.agqrplayer4tv.model.preference.StreamingType
 
 class PlaybackExoPlayerFragment : PlaybackPlayerFragmentBase(), Player.EventListener {
-    private lateinit var exoPlayerView: SimpleExoPlayerView
+    private lateinit var exoPlayerView: PlayerView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.playback_exoplayer, container, false)
@@ -34,12 +33,15 @@ class PlaybackExoPlayerFragment : PlaybackPlayerFragmentBase(), Player.EventList
     }
 
     override fun play() {
-        val trackSelector = DefaultTrackSelector(AdaptiveTrackSelection.Factory(DefaultBandwidthMeter()))
+        val trackSelector = DefaultTrackSelector(requireContext(), AdaptiveTrackSelection.Factory())
         val loadControl = DefaultLoadControl()
-        val exoPlayer = ExoPlayerFactory.newSimpleInstance(requireContext(), trackSelector, loadControl)
+        val exoPlayer = SimpleExoPlayer.Builder(requireContext())
+            .setTrackSelector(trackSelector)
+            .setLoadControl(loadControl)
+            .build()
         val mediaSource = when (ApplicationPreference.getStreamingType().value) {
             StreamingType.HLS -> HlsMediaSource.Factory(DefaultDataSourceFactory(this.context, USER_AGENT)).createMediaSource(Uri.parse(URL_HLS))
-            StreamingType.RTMP -> ExtractorMediaSource(Uri.parse(URL_RTMP), { RtmpDataSource() }, { arrayOf(FlvExtractor2()) }, null, null)
+            StreamingType.RTMP -> ProgressiveMediaSource.Factory({ RtmpDataSource() }, { arrayOf(FlvExtractor2()) }).createMediaSource(Uri.parse(URL_RTMP))
             else -> throw NotImplementedError()
         }
 
