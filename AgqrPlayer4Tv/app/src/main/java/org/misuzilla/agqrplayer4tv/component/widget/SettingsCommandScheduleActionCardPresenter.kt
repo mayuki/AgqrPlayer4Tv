@@ -7,14 +7,11 @@ import org.misuzilla.agqrplayer4tv.component.widget.SettingsCommandScheduleActio
 import org.misuzilla.agqrplayer4tv.component.widget.TypedViewPresenter
 import org.misuzilla.agqrplayer4tv.infrastracture.extension.addTo
 import org.misuzilla.agqrplayer4tv.model.Reservation
-import rx.Observable
-import rx.subscriptions.CompositeSubscription
 
 /**
  * 設定: 予約 のカードを表示するためのPresenterクラスです。
  */
 class SettingsCommandScheduleActionCardPresenter : TypedViewPresenter<ImageCardView, SettingsCommandScheduleAction>() {
-    val subscriptions = CompositeSubscription()
     override fun onBindViewHolderWithItem(viewHolder: ViewHolder, view: ImageCardView, item: SettingsCommandScheduleAction) {
         view.apply {
             setMainImageDimensions(320, 256)
@@ -23,7 +20,7 @@ class SettingsCommandScheduleActionCardPresenter : TypedViewPresenter<ImageCardV
             mainImage = item.icon
             item.label2?.let { contentText = it }
         }
-
+/*
         Observable.just(Reservation.instance)
                 .mergeWith(Reservation.instance.onChangeAsObservable)
                 .map { Reservation.instance.scheduledCount }
@@ -31,11 +28,10 @@ class SettingsCommandScheduleActionCardPresenter : TypedViewPresenter<ImageCardV
                     view.titleText = item.label1
                     view.contentText = String.format(item.label2.toString(), it)
                 }
-                .addTo(subscriptions)
+                .addTo(subscriptions)*/
     }
 
     override fun onUnbindViewHolder(viewHolder: ViewHolder, view: ImageCardView) {
-        subscriptions.clear()
     }
 
     override fun onCreateView(parent: ViewGroup): ImageCardView {

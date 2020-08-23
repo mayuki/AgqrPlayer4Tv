@@ -1,61 +1,29 @@
 package org.misuzilla.agqrplayer4tv.component.fragment
 
 import android.content.Intent
-import androidx.fragment.app.Fragment
 import android.util.Log
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 import org.misuzilla.agqrplayer4tv.R
 import org.misuzilla.agqrplayer4tv.component.activity.ErrorActivity
-import org.misuzilla.agqrplayer4tv.infrastracture.extension.addTo
-import org.misuzilla.agqrplayer4tv.model.LogicalDateTime
-import org.misuzilla.agqrplayer4tv.model.NowPlaying
-import org.misuzilla.agqrplayer4tv.model.TimetableProgram
-import jp.keita.kagurazaka.rxproperty.ReadOnlyRxProperty
-import jp.keita.kagurazaka.rxproperty.RxProperty
-import jp.keita.kagurazaka.rxproperty.toRxProperty
-import rx.Observable
-import rx.android.schedulers.AndroidSchedulers
-import rx.schedulers.Schedulers
-import rx.subjects.BehaviorSubject
-import rx.subjects.Subject
-import rx.subscriptions.CompositeSubscription
-import java.util.*
+import org.misuzilla.agqrplayer4tv.infrastracture.extension.*
 import java.util.concurrent.TimeUnit
+
 
 abstract class PlaybackPlayerFragmentBase : Fragment() {
     private val onError = BehaviorSubject.create<Unit>()
+    public val viewModel: PlaybackPlayerViewModel by viewModels()
 
-    protected val URL_HLS: String get () = context!!.getString(R.string.url_hls)
-    protected val URL_RTMP: String get () = context!!.getString(R.string.url_rtmp)
-    protected val USER_AGENT: String get () = context!!.getString(R.string.user_agent)
+    protected val URL_HLS: String get () = requireContext().getString(R.string.url_hls)
+    protected val URL_RTMP: String get () = requireContext().getString(R.string.url_rtmp)
+    protected val USER_AGENT: String get () = requireContext().getString(R.string.user_agent)
 
-    protected val subscriptions = CompositeSubscription()
-
-    abstract var isPlaying: ReadOnlyRxProperty<Boolean>
-        protected set
-    val progress: ReadOnlyRxProperty<Int>
-    val elapsedSeconds: ReadOnlyRxProperty<Int>
+    protected val disposables = CompositeDisposable()
 
     init {
-        val rxPropMode = EnumSet.of(RxProperty.Mode.RAISE_LATEST_VALUE_ON_SUBSCRIBE, RxProperty.Mode.DISTINCT_UNTIL_CHANGED)
-        val refreshInterval = Observable.interval(1, TimeUnit.SECONDS)
-                .map { NowPlaying.now?.program?.get() ?: TimetableProgram.DEFAULT }
-                .publish()
-                .refCount()
-
-        elapsedSeconds = refreshInterval
-                .map { LogicalDateTime.now.time.totalSeconds - it.start.totalSeconds  }
-                .toRxProperty(rxPropMode)
-
-        progress = refreshInterval
-                .map {
-                    val duration = (it.end.totalSeconds - it.start.totalSeconds)
-                    val elapsed = elapsedSeconds.get()
-                    val percent = Math.floor(elapsed / duration * 100.0).toInt()
-
-                    Math.max(100, Math.min(0, percent))
-                }
-                .toRxProperty(rxPropMode)
-
         observeError()
     }
 
@@ -69,7 +37,7 @@ abstract class PlaybackPlayerFragmentBase : Fragment() {
                 .takeUntil(onError.buffer(30, TimeUnit.SECONDS, 5).filter { it.count() > 5 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ play() }, { Log.e(TAG, it.toString()) }, { onRetryThresholdReached() })
-                .addTo(subscriptions)
+                .addTo(disposables)
     }
 
     private fun onRetryThresholdReached() {
@@ -83,7 +51,7 @@ abstract class PlaybackPlayerFragmentBase : Fragment() {
     override fun onDetach() {
         super.onDetach()
         stop()
-        subscriptions.unsubscribe()
+        disposables.clear()
     }
 
     override fun onResume() {

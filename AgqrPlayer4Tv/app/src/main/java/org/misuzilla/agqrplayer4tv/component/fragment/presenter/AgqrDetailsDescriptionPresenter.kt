@@ -1,15 +1,10 @@
 package org.misuzilla.agqrplayer4tv.component.fragment.presenter
 
 import androidx.leanback.widget.AbstractDetailsDescriptionPresenter
-import androidx.leanback.widget.Presenter
-import org.misuzilla.agqrplayer4tv.infrastracture.extension.addTo
-import org.misuzilla.agqrplayer4tv.infrastracture.extension.observeOnUIThread
+import androidx.lifecycle.LifecycleOwner
 import org.misuzilla.agqrplayer4tv.component.fragment.PlaybackControlsRowViewModel
-import rx.subscriptions.CompositeSubscription
 
-class AgqrDetailsDescriptionPresenter : AbstractDetailsDescriptionPresenter() {
-    private val subscription = CompositeSubscription()
-
+class AgqrDetailsDescriptionPresenter(private val lifecycleOwner: LifecycleOwner) : AbstractDetailsDescriptionPresenter() {
     override fun onBindDescription(viewHolder: ViewHolder, item: Any?) {
         val nowPlaying = (item as PlaybackControlsRowViewModel).nowPlaying
 
@@ -20,14 +15,9 @@ class AgqrDetailsDescriptionPresenter : AbstractDetailsDescriptionPresenter() {
         }
 
         nowPlaying.apply {
-            title.asObservable().subscribe({ viewHolder.title.text = it }).addTo(subscription)
-            subtitle.asObservable().subscribe({ viewHolder.subtitle.text = it }).addTo(subscription)
-            body.asObservable().subscribe({ viewHolder.body.text = it }).addTo(subscription)
+            getTitle().observe(lifecycleOwner, { viewHolder.title.text = it })
+            getSubTitle().observe(lifecycleOwner, { viewHolder.subtitle.text = it })
+            getBody().observe(lifecycleOwner, { viewHolder.body.text = it })
         }
-    }
-
-    override fun onUnbindViewHolder(viewHolder: Presenter.ViewHolder?) {
-        subscription.unsubscribe()
-        super.onUnbindViewHolder(viewHolder)
     }
 }

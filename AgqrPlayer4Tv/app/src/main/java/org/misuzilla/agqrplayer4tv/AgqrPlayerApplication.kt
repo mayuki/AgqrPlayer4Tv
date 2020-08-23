@@ -3,7 +3,6 @@ package org.misuzilla.agqrplayer4tv
 import android.app.Application
 import android.content.Intent
 import android.util.Log
-import org.misuzilla.agqrplayer4tv.infrastracture.extension.subscribe
 import org.misuzilla.agqrplayer4tv.model.NowPlaying
 import org.misuzilla.agqrplayer4tv.model.Timetable
 import org.misuzilla.agqrplayer4tv.model.preference.ApplicationPreference
@@ -28,15 +27,7 @@ class AgqrPlayerApplication : Application() {
         AndroidThreeTen.init(this)
 
         Reservation.initialize(this)
-        Reservation.instance.onChangeAsObservable.subscribe {
-            startService(Intent(this, UpdateRecommendationService::class.java))
-        }
-
         NowPlaying.initialize(Timetable(this))
-        NowPlaying.now!!.program.subscribe {
-            Log.d(TAG, "Current: ${it.title} (${it.mailAddress}) ${it.start}-${it.end}" )
-            Reservation.instance.removeAllExpired()
-        }
     }
 
     companion object {

@@ -2,7 +2,6 @@ package org.misuzilla.agqrplayer4tv.component.fragment
 
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,25 +19,11 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
-import jp.keita.kagurazaka.rxproperty.ReadOnlyRxProperty
-import jp.keita.kagurazaka.rxproperty.RxProperty
-import jp.keita.kagurazaka.rxproperty.toRxProperty
 import org.misuzilla.agqrplayer4tv.model.preference.ApplicationPreference
 import org.misuzilla.agqrplayer4tv.model.preference.StreamingType
-import rx.subjects.BehaviorSubject
 
 class PlaybackExoPlayerFragment : PlaybackPlayerFragmentBase(), Player.EventListener {
-    override var isPlaying: ReadOnlyRxProperty<Boolean> = RxProperty(false)
-    private var exoPlayerView: SimpleExoPlayerView? = null
-    private val stateChanged = BehaviorSubject.create(Unit)
-
-    init {
-        isPlaying = stateChanged
-                .map { exoPlayerView?.player }
-                .filter { it != null }
-                .map { it!!.playbackState == ExoPlayer.STATE_READY && it.playWhenReady }
-                .toRxProperty()
-    }
+    private lateinit var exoPlayerView: SimpleExoPlayerView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.playback_exoplayer, container, false)
@@ -51,13 +36,14 @@ class PlaybackExoPlayerFragment : PlaybackPlayerFragmentBase(), Player.EventList
     override fun play() {
         val trackSelector = DefaultTrackSelector(AdaptiveTrackSelection.Factory(DefaultBandwidthMeter()))
         val loadControl = DefaultLoadControl()
-        val exoPlayer = ExoPlayerFactory.newSimpleInstance(this.context!!, trackSelector, loadControl)
-        val mediaSource = when (ApplicationPreference.streamingType.get()) {
+        val exoPlayer = ExoPlayerFactory.newSimpleInstance(requireContext(), trackSelector, loadControl)
+        val mediaSource = when (ApplicationPreference.getStreamingType().value) {
             StreamingType.HLS -> HlsMediaSource.Factory(DefaultDataSourceFactory(this.context, USER_AGENT)).createMediaSource(Uri.parse(URL_HLS))
             StreamingType.RTMP -> ExtractorMediaSource(Uri.parse(URL_RTMP), { RtmpDataSource() }, { arrayOf(FlvExtractor2()) }, null, null)
+            else -> throw NotImplementedError()
         }
 
-        exoPlayerView?.apply {
+        exoPlayerView.apply {
             player = exoPlayer
             useController = false
         }
@@ -70,23 +56,26 @@ class PlaybackExoPlayerFragment : PlaybackPlayerFragmentBase(), Player.EventList
     }
 
     override fun stop() {
-        exoPlayerView?.player?.let {
+        exoPlayerView.player?.let {
             it.stop()
             it.release()
         }
-        exoPlayerView?.player = null
+        exoPlayerView.player = null
     }
 
     // ExoPlayer.EventListener
     override fun onPlayerError(error: ExoPlaybackException) {
-        this.reportError()
+        reportError()
     }
 
     override fun onLoadingChanged(isLoading: Boolean) {
     }
 
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-        stateChanged.onNext(Unit)
+        val player = exoPlayerView.player;
+        if (player != null) {
+            viewModel.setIsPlaying(player.playbackState == ExoPlayer.STATE_READY && player.playWhenReady)
+        }
     }
 
     override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters) {

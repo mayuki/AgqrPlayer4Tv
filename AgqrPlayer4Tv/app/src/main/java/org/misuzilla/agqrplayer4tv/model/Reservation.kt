@@ -7,12 +7,11 @@ import android.content.Intent
 import org.misuzilla.agqrplayer4tv.component.activity.MainActivity
 import android.content.Context.MODE_PRIVATE
 import android.util.Log
+import androidx.lifecycle.LiveData
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
-import com.google.gson.reflect.TypeToken
-import rx.Observable
-import rx.subjects.BehaviorSubject
-import rx.subjects.Subject
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 import java.io.*
 
 
@@ -26,7 +25,7 @@ class Reservation(val context: Context) {
         get() = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
     val onChangeAsObservable: Observable<Reservation>
-        get() = onChangeSubject.asObservable()
+        get() = onChangeSubject
     val scheduledCount: Int
         get() = getAllScheduledEntries().size
 

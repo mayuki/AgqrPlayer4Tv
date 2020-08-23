@@ -1,40 +1,57 @@
 package org.misuzilla.agqrplayer4tv.model
 
-import jp.keita.kagurazaka.rxproperty.ReadOnlyRxProperty
-import jp.keita.kagurazaka.rxproperty.RxProperty
-import jp.keita.kagurazaka.rxproperty.toRxProperty
-import org.misuzilla.agqrplayer4tv.infrastracture.extension.observeOnUIThread
-import org.threeten.bp.DayOfWeek
-import rx.Observable
-import java.util.*
-import java.util.concurrent.TimeUnit
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import kotlinx.coroutines.*
 
-class NowPlaying(timetable: Timetable) {
-    val program: ReadOnlyRxProperty<TimetableProgram>
-    val title: ReadOnlyRxProperty<String>
-    val subtitle: ReadOnlyRxProperty<String>
-    val body: ReadOnlyRxProperty<String>
+class NowPlaying(private val timetable: Timetable) : CoroutineScope by CoroutineScope(Dispatchers.Main) {
+    private val program: MutableLiveData<TimetableProgram> = MutableLiveData()
+    private val runningJob: Job
+
+    fun getProgram(): LiveData<TimetableProgram> {
+        return program
+    }
+
+    fun getTitle(): LiveData<String> {
+        return Transformations.map(program, { it.title })
+    }
+
+    fun getSubTitle(): LiveData<String> {
+        return Transformations.map(program, { (it.personality ?: "") + (it.mailAddress?.let { " <${it}>" } ?: "") })
+    }
+
+    fun getBody(): LiveData<String> {
+        return Transformations.map(program, { "${it.start.toShortString()}～${it.end.toShortString()}" })
+    }
 
     init {
-        val rxPropMode = EnumSet.of(RxProperty.Mode.RAISE_LATEST_VALUE_ON_SUBSCRIBE, RxProperty.Mode.DISTINCT_UNTIL_CHANGED)
+        runningJob = launch {
+            runLoop()
+        }
+    }
 
-        program = Observable.just(0L)
-                .mergeWith(Observable.interval(10, TimeUnit.SECONDS))
-                .flatMap { timetable.getDatasetAsync().toObservable() }
-                .doOnError { TimetableProgram.DEFAULT }
-                .map { it.data[LogicalDateTime.now.dayOfWeek]?.firstOrNull { it.isPlaying } }
-                .map { it ?: TimetableProgram.DEFAULT }
-                .observeOnUIThread()
-                .toRxProperty(TimetableProgram.DEFAULT, rxPropMode)
+    suspend fun runLoop() {
+        while (currentCoroutineContext().isActive) {
+            val timetableProgram = async(Dispatchers.IO) {
+                try {
+                    val dataset = timetable.getDatasetAsync()
+                    val currentProgram = dataset.data[LogicalDateTime.now.dayOfWeek]?.firstOrNull { it.isPlaying }
 
-        title = program.asObservable().map { it.title }.toRxProperty(rxPropMode)
-        subtitle = program.asObservable().map { (it.personality ?: "") + (it.mailAddress?.let { " <${it}>" } ?: "") }.toRxProperty(rxPropMode)
-        body = program.asObservable().map { "${it.start.toShortString()}～${it.end.toShortString()}" }.toRxProperty(rxPropMode)
+                    return@async currentProgram ?: TimetableProgram.DEFAULT
+                } catch (e: Exception) { }
+
+                return@async TimetableProgram.DEFAULT
+            }.await()
+
+            program.value = timetableProgram
+
+            delay(1000 * 10) // 10秒
+        }
     }
 
     companion object {
-        var now: NowPlaying? = null
-            private set
+        lateinit var now: NowPlaying
 
         fun initialize(timetable: Timetable) {
             now = NowPlaying(timetable)

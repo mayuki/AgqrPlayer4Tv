@@ -14,30 +14,30 @@ import org.misuzilla.agqrplayer4tv.model.preference.PlayerType
  */
 class PlayerSettingGuidedStepFragment : GuidedStepSupportFragment() {
     override fun onCreateGuidance(savedInstanceState: Bundle?): GuidanceStylist.Guidance {
-        return GuidanceStylist.Guidance(context!!.getString(R.string.guidedstep_player_title), context!!.getString(R.string.guidedstep_player_description), context!!.getString(R.string.guidedstep_settings_title), null)
+        return GuidanceStylist.Guidance(requireContext().getString(R.string.guidedstep_player_title), requireContext().getString(R.string.guidedstep_player_description), requireContext().getString(R.string.guidedstep_settings_title), null)
     }
 
     override fun onCreateActions(actions: MutableList<GuidedAction>, savedInstanceState: Bundle?) {
         with (actions) {
-            addCheckAction(context!!, PlayerType.EXO_PLAYER.value,
-                    context!!.getString(R.string.guidedstep_player_type_exoplayer),
-                    context!!.getString(R.string.guidedstep_player_type_exoplayer_description),
-                    ApplicationPreference.playerType.get() == PlayerType.EXO_PLAYER)
-            addCheckAction(context!!, PlayerType.ANDROID_DEFAULT.value,
-                    context!!.getString(R.string.guidedstep_player_type_default),
-                    context!!.getString(R.string.guidedstep_player_type_default_description),
-                    ApplicationPreference.playerType.get() == PlayerType.ANDROID_DEFAULT)
-            addCheckAction(context!!, PlayerType.WEB_VIEW.value,
-                    context!!.getString(R.string.guidedstep_player_type_webview),
-                    context!!.getString(R.string.guidedstep_player_type_webview_description),
-                    ApplicationPreference.playerType.get() == PlayerType.WEB_VIEW)
+            addCheckAction(requireContext(), PlayerType.EXO_PLAYER.value,
+                requireContext().getString(R.string.guidedstep_player_type_exoplayer),
+                requireContext().getString(R.string.guidedstep_player_type_exoplayer_description),
+                ApplicationPreference.getPlayerType().value == PlayerType.EXO_PLAYER)
+            addCheckAction(requireContext(), PlayerType.ANDROID_DEFAULT.value,
+                requireContext().getString(R.string.guidedstep_player_type_default),
+                requireContext().getString(R.string.guidedstep_player_type_default_description),
+                ApplicationPreference.getPlayerType().value == PlayerType.ANDROID_DEFAULT)
+            addCheckAction(requireContext(), PlayerType.WEB_VIEW.value,
+                requireContext().getString(R.string.guidedstep_player_type_webview),
+                requireContext().getString(R.string.guidedstep_player_type_webview_description),
+                ApplicationPreference.getPlayerType().value == PlayerType.WEB_VIEW)
         }
     }
 
     override fun onGuidedActionClicked(action: GuidedAction) {
         actions.forEach { it.isChecked = it == action }
-        ApplicationPreference.playerType.set(PlayerType.fromInt(action.id.toInt()))
+        ApplicationPreference.setPlayerType(PlayerType.fromInt(action.id.toInt())!!)
 
-        fragmentManager!!.popBackStack()
+        parentFragmentManager.popBackStack()
     }
 }

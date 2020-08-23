@@ -16,6 +16,11 @@ import org.misuzilla.agqrplayer4tv.model.preference.ApplicationPreference
 import org.misuzilla.agqrplayer4tv.model.preference.PlayerType
 import org.misuzilla.agqrplayer4tv.model.preference.StreamingType
 import android.content.Intent
+import androidx.lifecycle.Observer
+import org.misuzilla.agqrplayer4tv.AgqrPlayerApplication
+import org.misuzilla.agqrplayer4tv.model.NowPlaying
+import org.misuzilla.agqrplayer4tv.model.Reservation
+import org.misuzilla.agqrplayer4tv.model.TimetableProgram
 
 class MainActivity : FragmentActivity() {
     private var currentFragment: PlaybackPlayerFragmentBase? = null
@@ -35,9 +40,17 @@ class MainActivity : FragmentActivity() {
         setContentView(R.layout.activity_main)
 
         // スケジュールして、同時にサービスを起動する
-        ApplicationPreference.recommendationCurrentProgram.set("")
+        ApplicationPreference.setRecommendationCurrentProgram("")
         BootupBroadcastReceiver.scheduleRecommendationUpdate(applicationContext)
         startService(Intent(this, UpdateRecommendationService::class.java))
+
+        NowPlaying.now.getProgram().observe(this, Observer {
+            Log.d(AgqrPlayerApplication.TAG, "Current: ${it.title} (${it.mailAddress}) ${it.start}-${it.end}" )
+            Reservation.instance.removeAllExpired()
+        })
+        Reservation.instance.onChangeAsObservable.subscribe {
+            startService(Intent(this, UpdateRecommendationService::class.java))
+        }
 
         updateWindowFlags()
 
@@ -50,7 +63,7 @@ class MainActivity : FragmentActivity() {
 
         updateWindowFlags()
 
-        if (lastPlayerType != ApplicationPreference.playerType.get()) {
+        if (lastPlayerType != ApplicationPreference.getPlayerType().value) {
             setupPlayerFlagment()
         }
     }
@@ -62,7 +75,7 @@ class MainActivity : FragmentActivity() {
         clearWindowFlags()
 
         // 正常シャットダウンフラグを立てる
-        ApplicationPreference.isLastShutdownCorrectly.set(true)
+        ApplicationPreference.setIsLastShutdownCorrectly(true)
     }
 
     private fun updateWindowFlags() {
@@ -92,7 +105,7 @@ class MainActivity : FragmentActivity() {
         when (keyCode) {
             KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE -> {
                 currentFragment?.let {
-                    if (it.isPlaying.get()) {
+                    if (it.viewModel.isPlaying().value!!) {
                         it.stop()
                     } else {
                         it.play()
@@ -112,10 +125,11 @@ class MainActivity : FragmentActivity() {
 //            ApplicationPreference.streamingType.set(StreamingType.HLS)
 //        }
 
-        val fragment = when (ApplicationPreference.playerType.get()) {
+        val fragment = when (ApplicationPreference.getPlayerType().value) {
             PlayerType.EXO_PLAYER -> PlaybackExoPlayerFragment()
             PlayerType.ANDROID_DEFAULT -> PlaybackDefaultVideoViewFragment()
             PlayerType.WEB_VIEW -> PlaybackWebViewFragment()
+            else -> throw NotImplementedError()
         }
 
         this.supportFragmentManager
@@ -124,8 +138,8 @@ class MainActivity : FragmentActivity() {
                 .commit()
 
         // 正常シャットダウンフラグを折っておく
-        ApplicationPreference.isLastShutdownCorrectly.set(false)
+        ApplicationPreference.setIsLastShutdownCorrectly(false)
 
-        lastPlayerType = ApplicationPreference.playerType.get()
+        lastPlayerType = ApplicationPreference.getPlayerType().value!!
     }
 }

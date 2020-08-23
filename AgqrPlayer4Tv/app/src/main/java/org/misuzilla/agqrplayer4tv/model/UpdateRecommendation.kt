@@ -12,110 +12,121 @@ import android.text.TextPaint
 import android.util.Log
 import com.microsoft.appcenter.analytics.Analytics
 import com.squareup.picasso.Picasso
-import com.squareup.picasso.Transformation
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.misuzilla.agqrplayer4tv.R
 import org.misuzilla.agqrplayer4tv.component.activity.MainActivity
 import org.misuzilla.agqrplayer4tv.component.activity.PlayConfirmationActivity
 import org.misuzilla.agqrplayer4tv.infrastracture.OkHttpClientHelper
 import org.misuzilla.agqrplayer4tv.infrastracture.extension.*
 import org.misuzilla.agqrplayer4tv.model.preference.ApplicationPreference
-import rx.Completable
-import rx.Observable
-import rx.Single
 
 class UpdateRecommendation(private val context: Context) {
     /**
      * 番組とそのタイトル画像のマッピングファイルを取得、解析します。
      */
-    fun getProgramImageMappingAsync(): Single<Map<String, String>> {
-        val imageMappingUrl = context.resources.getString(R.string.url_image_mapping)
-        val client = OkHttpClientHelper.create(context)
-        return client.get(imageMappingUrl).enqueueAndToSingle()
-                .map { it.body().string() }
-                .onErrorResumeNext {
-                    Analytics.trackEvent("Exception", mapOf("caller" to "UpdateRecommendation.getProgramImageMappingAsync", "name" to it.javaClass.name, "message" to it.message.toString()))
-                    Single.just("")
-                }
-                .map {
-                    // カンマ区切りファイルを雑にパースする
-                    it.split('\n')
-                        .map { it.trim() }
-                        .filter { !it.startsWith("#") }
-                        .filter { !it.isNullOrBlank() }
-                        .map { it.split(',') }
-                        .filter { it.size >= 3 }
-                        .flatMap { listOf(Pair(it[0], it[2]), Pair(if (it[1].isNullOrBlank()) it[0] + "-EmailAddress" else it[1], it[2])) } // メールアドレスがないとき用に適当に返す
-                        .toMap()
-                }
-                .cache()
+    suspend fun getProgramImageMappingAsync(): Map<String, String> {
+        return withContext(Dispatchers.Default) {
+            val imageMappingUrl = context.resources.getString(R.string.url_image_mapping)
+            val client = OkHttpClientHelper.create(context)
+            try {
+                val body = client.get(imageMappingUrl).await()
+                    .body()
+                    .string()
+
+                // カンマ区切りファイルを雑にパースする
+                return@withContext body.split('\n')
+                    .map { it.trim() }
+                    .filter { !it.startsWith("#") && !it.isNullOrBlank() }
+                    .map { it.split(',') }
+                    .filter { it.size >= 3 }
+                    .flatMap {
+                        listOf(
+                            Pair(it[0], it[2]),
+                            Pair(
+                                if (it[1].isNullOrBlank()) it[0] + "-EmailAddress" else it[1],
+                                it[2]
+                            )
+                        )
+                    } // メールアドレスがないとき用に適当に返す
+                    .toMap()
+            } catch (e: Exception) {
+                Analytics.trackEvent(
+                    "Exception",
+                    mapOf(
+                        "caller" to "UpdateRecommendation.getProgramImageMappingAsync",
+                        "name" to e.javaClass.name,
+                        "message" to e.message.toString()
+                    )
+                )
+                return@withContext mapOf<String, String>()
+            }
+        }
     }
 
     /**
      * タイムテーブルの更新 & マッピングの取得、その後画像も取得
      */
-    fun getCurrentAndNextProgramAndIcon(timetable: Timetable): Single<List<ProgramWithIcon>> {
-        val mappingTask = this.getProgramImageMappingAsync()
-        return Single.zip(timetable.getDatasetAsync(), mappingTask, { l, r -> l })
-                .flatMap { timetableDataset ->
-                    val now = LogicalDateTime.now
+    suspend fun getCurrentAndNextProgramAndIconAsync(timetable: Timetable): List<ProgramWithIcon> {
+        return withContext(Dispatchers.Default) {
+            val mapping = getProgramImageMappingAsync()
+            val timetableDataset = timetable.getDatasetAsync()
+            val now = LogicalDateTime.now
 
-                    // 現在と次の番組を取得する
-                    val currentAndNext = timetableDataset.data[now.dayOfWeek]!!.filter { it.end >= now.time }.take(2)
-
-                    // マッピングから画像を取得する
-                    currentAndNext.map { program ->
-                        getCardImageFromProgramAsync(mappingTask, program).map { ProgramWithIcon(program, it) }
-                    }.whenAll()
-                }
+            // 現在と次の番組を取得する
+            val currentAndNext = timetableDataset.data[now.dayOfWeek]!!.filter { it.end >= now.time }.take(2)
+            // マッピングから画像を取得する
+            return@withContext currentAndNext.map { program ->
+                val image = getCardImageFromProgramAsync(mapping, program)
+                ProgramWithIcon(program, image)
+            }
+        }
     }
 
-    fun getCardImageFromProgramAsync(mappingTask: Single<Map<String, String>>, program: TimetableProgram): Single<Bitmap> {
+    private suspend fun getCardImageFromProgramAsync(mapping: Map<String, String>, program: TimetableProgram): Bitmap {
         val width = context.resources.displayMetrics.toDevicePixel(context.resources.getDimension(R.dimen.recommendation_empty_width))
         val height = context.resources.displayMetrics.toDevicePixel(context.resources.getDimension(R.dimen.recommendation_empty_height))
 
-        return mappingTask
-                .flatMap {
-                    when {
-                        it.containsKey(program.mailAddress) -> Picasso.with(context).load(it[program.mailAddress]).centerInside().resize(width, height).toSingle()
-                        it.containsKey(program.title) -> Picasso.with(context).load(it[program.title]).centerInside().resize(width, height).toSingle()
-                        else -> Single.just(createNotificationImageFromText(program))
+        var bitmap: Bitmap
+        try {
+            bitmap = when {
+                mapping.containsKey(program.mailAddress) -> Picasso.with(context).load(mapping[program.mailAddress]).centerInside().resize(width, height).await()
+                mapping.containsKey(program.title) -> Picasso.with(context).load(mapping[program.title]).centerInside().resize(width, height).await()
+                else -> return createNotificationImageFromText(program)
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, e.message, e)
+            bitmap = createNotificationImageFromText(program)
+        }
+
+        if (Reservation.instance.isScheduled(program)) {
+            val newBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(newBitmap)
+
+            canvas.drawBitmap(bitmap, (width - bitmap.width) / 2f, (height - bitmap.height) / 2f, Paint())
+
+            (context.getDrawable(R.drawable.ic_timer_white) as VectorDrawable).let {
+                it.bounds = Rect(16, 16, 128 + 16, 128 + 16)
+
+                canvas.drawPath(
+                    Path().apply {
+                        moveTo(0f, 0f)
+                        lineTo(0f, it.bounds.height() * 2f)
+                        lineTo(it.bounds.width() * 2f, 0f)
+                        close()
+                    },
+                    Paint().apply {
+                        color = context!!.getColor(R.color.accent_dark)
+                        style = Paint.Style.FILL
                     }
-                }
-                .onErrorReturn {
-                    Log.e(TAG, it.message, it)
-                    createNotificationImageFromText(program)
-                }
-                .map { bitmap ->
-                    if (Reservation.instance.isScheduled(program)) {
-                        val newBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-                        val canvas = Canvas(newBitmap)
+                )
+                it.draw(canvas)
+            }
 
-                        canvas.drawBitmap(bitmap, (width - bitmap.width) / 2f, (height - bitmap.height) / 2f, Paint())
+            return newBitmap
+        }
 
-                        (context.getDrawable(R.drawable.ic_timer_white) as VectorDrawable).let {
-                            it.bounds = Rect(16, 16, 128 + 16, 128 + 16)
-
-                            canvas.drawPath(
-                                    Path().apply {
-                                        moveTo(0f, 0f)
-                                        lineTo(0f, it.bounds.height() * 2f)
-                                        lineTo(it.bounds.width() * 2f, 0f)
-                                        close()
-                                    },
-                                    Paint().apply {
-                                        color = context!!.getColor(R.color.accent_dark)
-                                        style = Paint.Style.FILL
-                                    }
-                            )
-                            it.draw(canvas)
-                        }
-
-                        newBitmap
-                    } else {
-                        bitmap
-                    }
-                }
-                .cache()
+        return bitmap
     }
 
     private fun createNotificationImageFromText(program: TimetableProgram): Bitmap {
