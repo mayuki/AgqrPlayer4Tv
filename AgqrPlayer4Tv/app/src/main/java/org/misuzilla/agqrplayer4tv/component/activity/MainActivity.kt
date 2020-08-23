@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.WindowManager
 import org.misuzilla.agqrplayer4tv.R
-import org.misuzilla.agqrplayer4tv.component.fragment.PlaybackDefaultVideoViewFragment
 import org.misuzilla.agqrplayer4tv.component.fragment.PlaybackExoPlayerFragment
 import org.misuzilla.agqrplayer4tv.component.fragment.PlaybackPlayerFragmentBase
 import org.misuzilla.agqrplayer4tv.component.fragment.PlaybackWebViewFragment
@@ -14,13 +13,11 @@ import org.misuzilla.agqrplayer4tv.component.broadcastreceiver.BootupBroadcastRe
 import org.misuzilla.agqrplayer4tv.component.service.UpdateRecommendationService
 import org.misuzilla.agqrplayer4tv.model.preference.ApplicationPreference
 import org.misuzilla.agqrplayer4tv.model.preference.PlayerType
-import org.misuzilla.agqrplayer4tv.model.preference.StreamingType
 import android.content.Intent
 import androidx.lifecycle.Observer
 import org.misuzilla.agqrplayer4tv.AgqrPlayerApplication
 import org.misuzilla.agqrplayer4tv.model.NowPlaying
 import org.misuzilla.agqrplayer4tv.model.Reservation
-import org.misuzilla.agqrplayer4tv.model.TimetableProgram
 
 class MainActivity : FragmentActivity() {
     private var currentFragment: PlaybackPlayerFragmentBase? = null
@@ -127,7 +124,7 @@ class MainActivity : FragmentActivity() {
 
         val fragment = when (ApplicationPreference.getPlayerType().value) {
             PlayerType.EXO_PLAYER -> PlaybackExoPlayerFragment()
-            PlayerType.ANDROID_DEFAULT -> PlaybackDefaultVideoViewFragment()
+            PlayerType.ANDROID_DEFAULT -> PlaybackExoPlayerFragment()
             PlayerType.WEB_VIEW -> PlaybackWebViewFragment()
             else -> throw NotImplementedError()
         }

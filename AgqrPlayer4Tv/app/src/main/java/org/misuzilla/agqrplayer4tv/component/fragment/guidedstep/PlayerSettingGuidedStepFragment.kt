@@ -18,19 +18,16 @@ class PlayerSettingGuidedStepFragment : GuidedStepSupportFragment() {
     }
 
     override fun onCreateActions(actions: MutableList<GuidedAction>, savedInstanceState: Bundle?) {
+        val playerType = ApplicationPreference.getPlayerType().value
         with (actions) {
             addCheckAction(requireContext(), PlayerType.EXO_PLAYER.value,
                 requireContext().getString(R.string.guidedstep_player_type_exoplayer),
                 requireContext().getString(R.string.guidedstep_player_type_exoplayer_description),
-                ApplicationPreference.getPlayerType().value == PlayerType.EXO_PLAYER)
-            addCheckAction(requireContext(), PlayerType.ANDROID_DEFAULT.value,
-                requireContext().getString(R.string.guidedstep_player_type_default),
-                requireContext().getString(R.string.guidedstep_player_type_default_description),
-                ApplicationPreference.getPlayerType().value == PlayerType.ANDROID_DEFAULT)
+                playerType == PlayerType.EXO_PLAYER || playerType == PlayerType.ANDROID_DEFAULT)
             addCheckAction(requireContext(), PlayerType.WEB_VIEW.value,
                 requireContext().getString(R.string.guidedstep_player_type_webview),
                 requireContext().getString(R.string.guidedstep_player_type_webview_description),
-                ApplicationPreference.getPlayerType().value == PlayerType.WEB_VIEW)
+                playerType == PlayerType.WEB_VIEW)
         }
     }
 
