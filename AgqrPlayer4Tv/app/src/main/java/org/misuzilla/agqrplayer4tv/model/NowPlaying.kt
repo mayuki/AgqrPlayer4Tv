@@ -44,7 +44,9 @@ class NowPlaying(private val timetable: Timetable) : CoroutineScope by Coroutine
                 return@async TimetableProgram.DEFAULT
             }.await()
 
-            program.value = timetableProgram
+            if (program.value != timetableProgram) {
+                program.value = timetableProgram
+            }
 
             delay(1000 * 10) // 10秒
         }

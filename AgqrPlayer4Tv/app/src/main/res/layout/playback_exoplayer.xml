@@ -13,7 +13,7 @@
         android:layout_gravity="center"
         android:layout_centerInParent="true" />
     <fragment
-        android:name="org.misuzilla.agqrplayer4tv.component.fragment.AgqrPlaybackOverlayFragment"
+        android:name="org.misuzilla.agqrplayer4tv.component.fragment.AgqrPlaybackOverlayFragment2"
         android:id="@+id/details_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

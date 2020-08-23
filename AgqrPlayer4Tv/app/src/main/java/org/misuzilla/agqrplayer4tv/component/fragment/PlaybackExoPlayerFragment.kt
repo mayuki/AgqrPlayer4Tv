@@ -24,45 +24,49 @@ import org.misuzilla.agqrplayer4tv.model.preference.StreamingType
 class PlaybackExoPlayerFragment : PlaybackPlayerFragmentBase(), Player.EventListener {
     private lateinit var exoPlayerView: PlayerView
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.playback_exoplayer, container, false)
+    lateinit var player: ExoPlayer
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val trackSelector = DefaultTrackSelector(requireContext(), AdaptiveTrackSelection.Factory())
+        val loadControl = DefaultLoadControl()
+        player = SimpleExoPlayer.Builder(requireContext())
+            .setTrackSelector(trackSelector)
+            .setLoadControl(loadControl)
+            .build()
+
+        val view = inflater.inflate(R.layout.playback_exoplayer, container, false)
         exoPlayerView = view.findViewById(R.id.surface_view)
 
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        player.addListener(this)
+        player.playWhenReady = true
+
+        exoPlayerView.player = player
+        exoPlayerView.useController = false
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        stop()
+    }
+
     override fun play() {
-        val trackSelector = DefaultTrackSelector(requireContext(), AdaptiveTrackSelection.Factory())
-        val loadControl = DefaultLoadControl()
-        val exoPlayer = SimpleExoPlayer.Builder(requireContext())
-            .setTrackSelector(trackSelector)
-            .setLoadControl(loadControl)
-            .build()
         val mediaSource = when (ApplicationPreference.getStreamingType().value) {
             StreamingType.HLS -> HlsMediaSource.Factory(DefaultDataSourceFactory(this.context, USER_AGENT)).createMediaSource(Uri.parse(URL_HLS))
             StreamingType.RTMP -> ProgressiveMediaSource.Factory({ RtmpDataSource() }, { arrayOf(FlvExtractor2()) }).createMediaSource(Uri.parse(URL_RTMP))
             else -> throw NotImplementedError()
         }
 
-        exoPlayerView.apply {
-            player = exoPlayer
-            useController = false
-        }
-
-        exoPlayer.apply {
-            addListener(this@PlaybackExoPlayerFragment)
-            prepare(mediaSource)
-            playWhenReady = true
-        }
+        player.prepare(mediaSource)
     }
 
     override fun stop() {
-        exoPlayerView.player?.let {
-            it.stop()
-            it.release()
-        }
-        exoPlayerView.player = null
+        player.stop()
     }
 
     // ExoPlayer.EventListener
